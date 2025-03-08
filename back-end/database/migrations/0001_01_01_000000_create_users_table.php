@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('adress');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('telephone');
+            $table->string('telephone');
             $table->enum('role', ['client', 'admin'])->default('admin');
             $table->rememberToken();
             $table->timestamps();
