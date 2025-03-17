@@ -18,15 +18,15 @@ const Navigation = () => {
           <div className="d-flex justify-content-center flex-grow-1">
             <ul className="navbar-nav d-flex justify-content-center w-100">
               <li className={`nav-item ms-5 ${isActive('/')}`}><Link to="/">Accueil</Link></li>
-              <li className={`nav-item ms-5 ${isActive('/boutique')}`}><Link to="/boutique">Boutique</Link></li>
-              <li className={`nav-item ms-5 ${isActive('/contact')}`}><Link to="/contact">Contact</Link></li>
+              <li className={`nav-item ms-5 ${isActive('/Boutique')}`}><Link to="/Boutique">Boutique</Link></li>
+              <li className={`nav-item ms-5 ${isActive('/Contact')}`}><Link to="/Contact">Contact</Link></li>
             </ul>
           </div>
 
           <div className="d-flex justify-content-end">
             <ul className="navbar-nav d-flex justify-content-end">
               <li className="nav-item ms-3"><Link to="/search" aria-label="Search"><FontAwesomeIcon icon={faSearch} className="nav-icon" /></Link></li>
-              <li className="nav-item ms-3"><Link to="/panier" aria-label="Cart"><FontAwesomeIcon icon={faShoppingCart} className="nav-icon" /></Link></li>
+              <li className="nav-item ms-3"><Link to="/Panier" aria-label="Cart"><FontAwesomeIcon icon={faShoppingCart} className="nav-icon" /></Link></li>
               <li className="nav-item ms-3"><button className="nav-btn btn btn-success">Se Connecter</button></li>
             </ul>
           </div>
