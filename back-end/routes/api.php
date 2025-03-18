@@ -41,18 +41,10 @@ Route::apiResource('ligne-achats', LigneAchatController::class);
 
 Route::apiResource('users', UserController::class);
 
-Route::group(['prefix' => 'auth'], function () {
-    // Inscription
-    Route::post('/register', [AuthController::class, 'register']);
-
-    // Connexion
-    Route::post('/login', [AuthController::class, 'login']);
-
-    // Déconnexion (protégée par Sanctum ou JWT)
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum'); // Ou 'auth:api' pour JWT
-
-    // Récupérer les informations de l'utilisateur (protégée par Sanctum ou JWT)
-    Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum'); // Ou 'auth:api' pour JWT
-    // Rafraîchir le token (protégée par Sanctum ou JWT)
-    Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:sanctum'); // Ou 'auth:api' pour JWT
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 });
