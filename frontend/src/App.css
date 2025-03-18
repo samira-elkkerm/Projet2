@@ -31,6 +31,180 @@ nav a{
 
 
 
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.nav-icon {
+  color: #46A358;
+  transition: color 0.8s ease;
+  margin-bottom: -6px;
+}
+
+.nav-icon:hover {
+  color: black;
+  width: 20px;
+  height: auto;
+}
+
+nav a {
+  color: #46A358;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.active {
+  font-style: italic;
+  font-weight: bold;
+  font-size: large;
+}
+
+.active a {
+  color: #46A358;
+  text-shadow: 1px 1px 1px #46A359;
+  padding-bottom: 10px;
+}
 
 
 
+
+
+
+
+
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  background-color: #fafafa;
+  padding: 20px;
+}
+
+
+.component-wrapper, .footer-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.component {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.aroosage, .entretien-du-jardin, .rnovation-d-usine {
+  flex: 1 1 300px;
+  text-align: left;
+  padding: 10px;
+}
+
+.aroosage .text-wrapper,
+.entretien-du-jardin .text-wrapper,
+.rnovation-d-usine .text-wrapper {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.aroosage .une-plateforme-en,
+.entretien-du-jardin .une-plateforme-en,
+.rnovation-d-usine .une-plateforme-en {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.coordonnes-wrapper {
+  background-color: #dad8d1;
+  padding: 20px;
+  width: 100%;
+}
+
+.coordonnes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.phone, .adresse, .email {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.div-2 {
+  display: flex;
+  justify-content: space-between; 
+  gap: 20px; 
+  width: 100%;
+}
+
+.mon-compte, .catgories, .reseaux-sociaux {
+  flex: 1 1 200px; 
+  text-align: left; 
+  display: flex;
+  flex-direction: column; 
+}
+
+.mon-compte .text-wrapper-2,
+.catgories .text-wrapper-2,
+.reseaux-sociaux .text-wrapper-5 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.mon-compte .text-wrapper-3,
+.catgories .text-wrapper-4 {
+  font-size: 16px;
+  margin-bottom: 5px; 
+  color: #000000;
+  text-decoration: none;
+}
+
+.reseaux-sociaux .social-icons {
+  display: flex;
+  gap: 15px; 
+}
+
+.hover-effect:hover {
+  color: grey; 
+  text-decoration: underline;
+}
+
+
+@media (max-width: 768px) {
+  .component, .div-2 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .aroosage, .entretien-du-jardin, .rnovation-d-usine {
+    flex: 1 1 100%;
+  }
+
+  .coordonnes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mon-compte, .catgories, .reseaux-sociaux {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-wrapper-2, .text-wrapper-5 {
+    font-size: 16px;
+  }
+
+  .text-wrapper-3, .text-wrapper-4 {
+    font-size: 14px;
+  }
+}

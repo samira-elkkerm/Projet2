@@ -1,7 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
-
 import store from './redux/store';
 import Navigation from './layout/Navigation';
 import Accueil from './composants/Client/Accueil';
@@ -26,24 +25,24 @@ const App = () => (
     <>
       <Navigation />
       <Routes>
-        {/* Routes publiques (client) */}
+        
         <Route path="/" element={<Accueil />} />
         <Route path="/Boutique" element={<Boutique />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Panier" element={<Panier />} />
 
-        {/* Routes d'authentification */}
+        
         <Route path="/Connecter" element={<Connecter />} />
         <Route path="/Inscrire" element={<Inscrire />} />
 
-        {/* Routes protégées (admin) */}
+        
         <Route path="/TableauBord" element={<TableauBord />} />
         <Route path="/GestionCommandes" element={<GestionCommandes />} />
         <Route path="/GestionUtilisateur" element={<GestionUtilisateur />} />
         <Route path="/GestionProduits" element={<GestionProduits />} />
         <Route path="/GestionPaiement" element={<GestionPaiement />} />
 
-        {/* Redirection pour les routes inconnues */}
+        
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       </>

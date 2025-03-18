@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from '../../layout/Navigation';
+import Footer from '../../layout/Footer';
 
 const Panier = () => {
   return (
@@ -7,6 +7,8 @@ const Panier = () => {
       
       
       <h1>Votre panier est vide.🌿</h1>
+      
+      <Footer/>
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
-import Navigation from '../../layout/Navigation';
-
+import Footer from '../../layout/Footer';
 
 const Accueil = () => {
 
@@ -9,7 +8,7 @@ const Accueil = () => {
       
       <h1>Bienvenue sur notre boutique. 🌿</h1>
 
-      
+      <Footer/>
 
     </div>
   );

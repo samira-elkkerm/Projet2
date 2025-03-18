@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from '../../layout/Navigation';
+import Footer from '../../layout/Footer';
 
 const Contact = () => {
   return (
@@ -7,6 +7,8 @@ const Contact = () => {
       
       
       <h1>Nous sommes là pour vous aider.🌿</h1>
+      
+      <Footer/>
     </div>
   );
 };
