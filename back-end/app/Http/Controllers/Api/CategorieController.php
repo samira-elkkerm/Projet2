@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Categorie;
 
-class CategoryController extends Controller
+class CategorieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return response()->json(Categorie::all());
     }
 
     /**
@@ -20,7 +21,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['type' => 'required|string|max:255']);
+        $categorie = Categorie::create(['type' => $request->type]);
+        return response()->json($categorie, 201);
     }
 
     /**

@@ -225,3 +225,40 @@ nav a {
   width: 100%;
   padding: 40px 20px;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .categories {
+    max-width: 100%; 
+    margin-left: 0; 
+    padding: 15px;
+    gap: 15px;
+  }
+}
+
+.categories {
+  position: relative;
+  font-family: "Roboto-Bold", Helvetica;
+  font-weight: 700;
+  color: #000000;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 323px;
+  align-items: flex-start; /* Aligner les éléments à gauche */
+  gap: 20px;
+  background-color: #b6b6b630;
+  margin-left: 100px; /* Décalage vers la gauche */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+  
+
+.categories ul{
+  list-style-type: none; 
+}
+

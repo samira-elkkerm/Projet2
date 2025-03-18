@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CategorieController;
 use App\Http\Controllers\Api\ProduitController;
 use App\Http\Controllers\Api\LigneCommandeController;
 use App\Http\Controllers\Api\CommandeController;
@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('categories', CategoryController::class);
+Route::apiResource('categories', CategorieController::class);
 
 Route::apiResource('produites', ProduitController::class);
 

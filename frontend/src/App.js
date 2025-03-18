@@ -13,6 +13,7 @@ import GestionCommandes from './composants/Admin/GestionCommandes';
 import GestionUtilisateur from './composants/Admin/GestionUtilisateur';
 import GestionProduits from './composants/Admin/GestionProduits';
 import GestionPaiement from './composants/Admin/GestionPaiement';
+import BarreCategories from './composants/Client/BarreCategories';
 
 
 import './App.css'; 
@@ -22,6 +23,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => (
   <Provider store={store}>
     <>
+    
       <Routes>
         
         <Route path="/" element={<Accueil />} />
