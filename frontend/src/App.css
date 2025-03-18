@@ -208,3 +208,20 @@ nav a {
     font-size: 14px;
   }
 }
+/*slider*/
+.btn-rounded {
+  background-color: #46A358;
+  color: white;
+  border-radius: 8%;
+  border-color: transparent;
+  padding: 10px;
+  height: 50px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slider{
+  background-color: #dad8d1;
+  width: 100%;
+  padding: 40px 20px;
+}

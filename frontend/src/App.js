@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import store from './redux/store';
-import Navigation from './layout/Navigation';
 import Accueil from './composants/Client/Accueil';
 import Boutique from './composants/Client/Boutique';
 import Contact from './composants/Client/Contact';
@@ -23,7 +22,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => (
   <Provider store={store}>
     <>
-      <Navigation />
       <Routes>
         
         <Route path="/" element={<Accueil />} />
