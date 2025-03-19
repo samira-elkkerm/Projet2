@@ -259,9 +259,9 @@ nav a {
 
   
 
-.categories ul{
+.categories ul {
   list-style-type: none; 
-
+}
 .signup-container {
   display: flex;
   justify-content: center;

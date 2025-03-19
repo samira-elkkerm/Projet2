@@ -11,10 +11,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "assert": "^2.1.0",
-=======
->>>>>>> f2826dddd57e0d654b7aa3a236d8b409c8fb5293
+
     "axios": "^1.8.3",
     "bootstrap": "^5.3.3",
     "browserify-zlib": "^0.2.0",

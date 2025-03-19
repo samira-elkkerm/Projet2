@@ -6,13 +6,15 @@ import panierReducer from './reducers/panierReducer';
 import commandesReducer from './reducers/commandesReducer';
 import categoriesReducer from './reducers/categoriesReducer';
 
+
 // Combinaison des reducers
 const rootReducer = combineReducers({
   produits: produitsReducer,
   utilisateurs: utilisateursReducer,
   panier: panierReducer,
   commandes: commandesReducer,
-  categories: categoriesReducer,
+  categories:categoriesReducer,
+  
 });
 
 // Création du store Redux
