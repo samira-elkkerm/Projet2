@@ -33,6 +33,8 @@ Route::apiResource('produites', ProduitController::class);
 
 Route::apiResource('ligne-commandes', LigneCommandeController::class);
 
+Route::get('/images/{filename}', [ ProduitController::class,'getProductImage']);
+
 Route::apiResource('commandes', CommandeController::class);
 
 Route::apiResource('paiements', PaiementController::class);

@@ -46,4 +46,12 @@ class ProduitController extends Controller
     {
         //
     }
+    public function getProductImage($filename)
+    {
+        $path = storage_path('app/public/images/' . $filename);
+        if (!file_exists($path)) {
+            return response()->json(['error' => 'Image not found'], 404);
+        }
+        return response()->file($path);
+    }
 }

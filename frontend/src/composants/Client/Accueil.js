@@ -10,12 +10,12 @@ const Accueil = () => {
     <div>
          <Navigation />
          <Slider/>
+         <BarreCategories/>
 
       
       
 
 
-       <BarreCategories/>
         <Footer/>
 
     </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\LigneCommande;
+use App\Models\Produite;
 
 class LigneCommandeController extends Controller
 {
@@ -12,7 +14,13 @@ class LigneCommandeController extends Controller
      */
     public function index()
     {
-        //
+        $ligneCommandes = LigneCommande::all();
+        $produites = Produite::all();
+        
+        return response()->json([
+            "ligneCommandes" => $ligneCommandes,
+            "produites" => $produites
+        ]);
     }
 
     /**
@@ -36,7 +44,11 @@ class LigneCommandeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $ligneCommande = LigneCommande::findOrFail($id);
+        $ligneCommande->quantité = $request->quantité;
+        $ligneCommande->save();
+
+        return response()->json($ligneCommande);
     }
 
     /**
