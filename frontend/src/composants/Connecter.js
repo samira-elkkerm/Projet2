@@ -72,9 +72,11 @@ const Connecter = () => {
 
       if (data.token && data.user) {
         console.log("Token reçu:", data.token);
-        sessionStorage.setItem("authToken", data.token);
+        console.log("Utilisateur reçu:", data.user);
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("userId", data.user.id);
         console.log("Token stocké dans sessionStorage:", data.token);
-
+        console.log("ID utilisateur stocké dans sessionStorage:", data.user.id);
         if (data.user.role === "admin") {
           navigate("/Admin/TableauBord");
         } else if (data.user.role === "client") {
