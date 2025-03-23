@@ -56,18 +56,6 @@ const Inscrire = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const checkEmailExists = async (email) => {
-    try {
-      const response = await api.get(
-        `/check-email?email=${encodeURIComponent(email)}`
-      );
-      return response.data.exists;
-    } catch (error) {
-      console.error("Erreur lors de la vérification de l'email:", error);
-      return false;
-    }
-  };
-
   const validateField = (name, value) => {
     let error = "";
 
@@ -135,18 +123,11 @@ const Inscrire = () => {
     return error;
   };
 
-  const handleBlur = async (e) => {
+  const handleBlur = (e) => {
     const { name, value } = e.target;
 
     const error = validateField(name, value);
     setErrors({ ...errors, [name]: error });
-
-    if (name === "email" && value && !error) {
-      const emailExists = await checkEmailExists(value);
-      if (emailExists) {
-        setErrors({ ...errors, email: ["L'email existe déjà."] });
-      }
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -159,13 +140,6 @@ const Inscrire = () => {
         newErrors[field] = [error];
       }
     });
-
-    if (formData.email && !newErrors.email) {
-      const emailExists = await checkEmailExists(formData.email);
-      if (emailExists) {
-        newErrors.email = ["L'email existe déjà."];
-      }
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -193,7 +167,7 @@ const Inscrire = () => {
         setErrors(error.response.data.errors);
       } else {
         setErrors({
-          message: ["Une erreur s'est produite lors de l'inscription."],
+          message: ["Une erreur de l'inscription."],
         });
       }
     }

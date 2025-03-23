@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\PaiementController;
 use App\Http\Controllers\Api\LigneAchatController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\API\AuthController;
+use Illuminate\Auth\Events\Verified;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +35,7 @@ Route::apiResource('produites', ProduitController::class);
 
 Route::apiResource('ligne-commandes', LigneCommandeController::class);
 
-Route::get('/images/{filename}', [ ProduitController::class,'getProductImage']);
+Route::get('/images/{filename}', [ProduitController::class, 'getProductImage']);
 
 Route::apiResource('commandes', CommandeController::class);
 
@@ -43,10 +45,46 @@ Route::apiResource('ligne-achats', LigneAchatController::class);
 
 Route::apiResource('users', UserController::class);
 
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+
+
+Route::post('/forgot-password', [AuthController::class, 'ForgetPassword']);
+Route::post('/reset-password', [AuthController::class, 'ResetPassword'])->name('password.reset');
 Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('/admin/dashboard', [userController::class, 'index'])->name('admin.dashboard');
+
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return response()->json([
+            'message' => 'Please check your email for the verification link.',
+        ]);
+    })->middleware('throttle:6,1')->name('verification.send');
+
+    Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+        if (!hash_equals((string) $id, (string) $request->user()->getKey())) {
+            return response()->json(['message' => 'Invalid user ID'], 400);
+        }
+
+        if (!hash_equals((string) $hash, sha1($request->user()->getEmailForVerification()))) {
+            return response()->json(['message' => 'Invalid hash'], 400);
+        }
+
+        if ($request->user()->hasVerifiedEmail()) {
+            return response()->json(['message' => 'Email already verified.']);
+        }
+
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return response()->json(['message' => 'Email verified successfully!']);
+    })->name('verification.verify');
 });

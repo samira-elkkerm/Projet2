@@ -1,6 +1,5 @@
-
-import './App.css'; 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import { Provider } from "react-redux";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -17,13 +16,9 @@ import GestionUtilisateur from "./composants/Admin/GestionUtilisateur";
 import GestionProduits from "./composants/Admin/GestionProduits";
 import GestionPaiement from "./composants/Admin/GestionPaiement";
 
-
-
-
 const App = () => (
   <Provider store={store}>
     <>
-    
       <Routes>
         <Route path="/" element={<Accueil />} />
         <Route path="/Boutique" element={<Boutique />} />
@@ -33,7 +28,7 @@ const App = () => (
         <Route path="/Connecter" element={<Connecter />} />
         <Route path="/Inscrire" element={<Inscrire />} />
 
-        <Route path="/TableauBord" element={<TableauBord />} />
+        <Route path="/Admin/TableauBord" element={<TableauBord />} />
         <Route path="/GestionCommandes" element={<GestionCommandes />} />
         <Route path="/GestionUtilisateur" element={<GestionUtilisateur />} />
         <Route path="/GestionProduits" element={<GestionProduits />} />

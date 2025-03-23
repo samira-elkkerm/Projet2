@@ -4,17 +4,17 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     /**
-     * Enregistrer un nouvel utilisateur.
+     * Register a new user.
      */
     public function register(Request $request)
     {
@@ -35,37 +35,56 @@ class AuthController extends Controller
         $user = User::create([
             'nom' => $request->nom,
             'prenom' => $request->prenom,
+            'adress' => $request->adress,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'telephone' => $request->telephone,
+            'role' => 'client',
         ]);
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user', 'token'), 201);
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ], 201);
     }
 
-
+    /**
+     * Authenticate a user and return a JWT token.
+     */
     public function login(Request $request)
     {
-        // Implémentez la logique de connexion ici
+        $validation = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json([
+                'error' => 'Invalid credentials',
+            ], 401);
+        }
+
+        $user = Auth::user();
+
+        if ($request->input('remember')) {
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ])->cookie('remember_token', $token);
+        }
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
     }
 
-
-    public function logout(Request $request)
-    {
-        // Implémentez la logique de déconnexion ici
-    }
-
-
-    public function user(Request $request)
-    {
-        // Implémentez la logique pour récupérer les informations de l'utilisateur ici
-    }
-
-
-    public function refresh(Request $request)
-    {
-        // Implémentez la logique pour rafraîchir le token ici
-    }
+    /**
+     * Logout the user and invalidate the token.
+     */
+    public function logout(Request $request) {}
 }
