@@ -8,7 +8,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'; // Import de
 
 const Panier = () => {
   const [count, setCount] = useState(0);
-  const [IdUser, setIdUser] = useState(1);
+  const [IdUser, setIdUser] = useState(2);
   const [panier, setPanier] = useState([]);
   const [produites, setProduites] = useState([]);
   const [error, setError] = useState(null);
