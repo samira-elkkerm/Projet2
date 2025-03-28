@@ -39,4 +39,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return ['role' => $this->role];
     }
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
+    }
 }

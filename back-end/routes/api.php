@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\LigneAchatController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Auth\Events\Verified;
+use App\Http\Controllers\Api\VilleController;
 
 
 /*
@@ -28,6 +29,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/villes', [VilleController::class, 'index']);
+Route::get('/villes/{id}', [VilleController::class, 'show']);
+Route::post('/commandes', [CommandeController::class, 'store']);
 
 Route::apiResource('categories', CategorieController::class);
 
@@ -44,7 +48,7 @@ Route::apiResource('paiements', PaiementController::class);
 Route::apiResource('ligne-achats', LigneAchatController::class);
 
 Route::apiResource('users', UserController::class);
-
+Route::get('/users/{user}', [UserController::class, 'show']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

@@ -14,7 +14,7 @@ const Navigation = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken");
     setIsAuthenticated(!!token);
   }, []);
 

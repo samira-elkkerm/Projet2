@@ -10,23 +10,30 @@ class Commande extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_utilisateur',
-        'id_ligneCommande',
-        'total',
-        'status',
-        'date_commande',
-        'date_livraison',
+        'user_id',
+        'nom',
+        'prenom',
+        'email',
+        'telephone',
+        'adress',
+        'ville',
+        'pays',
+        'notes',
+        'total_produits',
+        'frais_livraison',
+        'total_general',
+        'methode_paiement',
+        'statut'
     ];
 
-    // Relation avec l'utilisateur
-    public function utilisateur()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id_utilisateur');
+        return $this->belongsTo(User::class);
     }
 
-    // Relation avec la ligne de commande
-    public function ligneCommande()
+    public function produits()
     {
-        return $this->belongsTo(LigneCommande::class, 'id_ligneCommande');
+        return $this->belongsToMany(Produite::class, 'ligne_commandes')
+            ->withPivot('quantite', 'prix_unitaire');
     }
 }

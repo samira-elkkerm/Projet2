@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Ville;
 
-class UserController extends Controller
+class VilleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $villes = Ville::all();
+        return response()->json($villes);
     }
 
     /**
@@ -29,20 +30,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        return response()->json([
-            'nom' => $user->nom,
-            'prenom' => $user->prenom,
-            'ville' => $user->ville,
-            'adress' => $user->adress,
-            'email' => $user->email,
-            'telephone' => $user->telephone,
-        ]);
+        //
     }
 
     /**

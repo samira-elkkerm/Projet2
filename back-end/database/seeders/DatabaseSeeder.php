@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 
 use App\Models\User;
-use App\Models\Categorie;  
-use App\Models\Produite;   
+use App\Models\Categorie;
+use App\Models\Produite;
 use App\Models\LigneCommande;
 use App\Models\Commande;
 use App\Models\Paiement;
@@ -13,6 +13,7 @@ use App\Models\LigneAchat;
 use App\Models\Achat;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -83,55 +84,55 @@ class DatabaseSeeder extends Seeder
 
 
 
-          // Créer quelques lignes de commande avec des produits existants
-          LigneCommande::create([
+        // Créer quelques lignes de commande avec des produits existants
+        LigneCommande::create([
             'quantité' => 2,
-            'id_produite' => 1, // Assurez-vous que l'ID du produit existe
+            'id_produite' => 1,
         ]);
 
         LigneCommande::create([
             'quantité' => 1,
-            'id_produite' => 2, // Assurez-vous que l'ID du produit existe
+            'id_produite' => 2,
         ]);
 
         LigneCommande::create([
             'quantité' => 3,
-            'id_produite' => 3, // Assurez-vous que l'ID du produit existe
+            'id_produite' => 3,
         ]);
 
 
 
 
 
-         // Créer des commandes avec des utilisateurs et des lignes de commande existants
-         $user1 = User::first(); // Assurez-vous qu'il y a un utilisateur dans la base de données
-         $ligneCommande1 = LigneCommande::first(); // Assurez-vous qu'il y a une ligne de commande dans la base de données
- 
-         Commande::create([
-             'id_utilisateur' => $user1->id,
-             'id_ligneCommande' => $ligneCommande1->id,
-             'total' => 200.00, // Exemple de total
-             'status' => 'en_attend',
-             'date_commande' => now(),
-             'date_livraison' => null,
-         ]);
- 
-         $user2 = User::skip(1)->first(); // Récupérer un autre utilisateur pour tester
-         $ligneCommande2 = LigneCommande::skip(1)->first(); // Récupérer une autre ligne de commande
- 
-         Commande::create([
-             'id_utilisateur' => $user2->id,
-             'id_ligneCommande' => $ligneCommande2->id,
-             'total' => 350.00, // Exemple de total
-             'status' => 'en_cours',
-             'date_commande' => now(),
-             'date_livraison' => null,
-         ]);
+        // Créer des commandes avec des utilisateurs et des lignes de commande existants
+        $user1 = User::first(); // Assurez-vous qu'il y a un utilisateur dans la base de données
+        $ligneCommande1 = LigneCommande::first(); // Assurez-vous qu'il y a une ligne de commande dans la base de données
+
+        Commande::create([
+            'id_utilisateur' => $user1->id,
+            'id_ligneCommande' => $ligneCommande1->id,
+            'total' => 200.00, // Exemple de total
+            'status' => 'en_attend',
+            'date_commande' => now(),
+            'date_livraison' => null,
+        ]);
+
+        $user2 = User::skip(1)->first(); // Récupérer un autre utilisateur pour tester
+        $ligneCommande2 = LigneCommande::skip(1)->first(); // Récupérer une autre ligne de commande
+
+        Commande::create([
+            'id_utilisateur' => $user2->id,
+            'id_ligneCommande' => $ligneCommande2->id,
+            'total' => 350.00, // Exemple de total
+            'status' => 'en_cours',
+            'date_commande' => now(),
+            'date_livraison' => null,
+        ]);
 
 
 
 
-         // Créer des paiements pour les commandes existantes
+        // Créer des paiements pour les commandes existantes
         $commande1 = Commande::first(); // Assurez-vous qu'il y a une commande dans la base de données
         Paiement::create([
             'id_commande' => $commande1->id,
@@ -164,26 +165,17 @@ class DatabaseSeeder extends Seeder
 
 
 
-         // Créer des achats pour les lignes d'achats existantes
-         $ligneAchat1 = LigneAchat::first(); // Assurez-vous qu'il y a une ligne d'achat dans la base de données
-         Achat::create([
-             'id_ligneAchat' => $ligneAchat1->id,
-             'status' => 'en_attend', // Exemple de statut
-         ]);
- 
-         $ligneAchat2 = LigneAchat::skip(1)->first(); // Récupérer une autre ligne d'achat
-         Achat::create([
-             'id_ligneAchat' => $ligneAchat2->id,
-             'status' => 'en_cours', // Exemple de statut
-         ]);
+        // Créer des achats pour les lignes d'achats existantes
+        $ligneAchat1 = LigneAchat::first(); // Assurez-vous qu'il y a une ligne d'achat dans la base de données
+        Achat::create([
+            'id_ligneAchat' => $ligneAchat1->id,
+            'status' => 'en_attend', // Exemple de statut
+        ]);
 
-
-
-
-
-
-
-
-
+        $ligneAchat2 = LigneAchat::skip(1)->first(); // Récupérer une autre ligne d'achat
+        Achat::create([
+            'id_ligneAchat' => $ligneAchat2->id,
+            'status' => 'en_cours', // Exemple de statut
+        ]);
     }
 }
