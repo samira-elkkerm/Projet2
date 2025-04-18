@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LigneCommande;
 use App\Models\Produite;
+use Illuminate\Http\Response; 
 
 class LigneCommandeController extends Controller
 {
@@ -54,8 +55,22 @@ class LigneCommandeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id)
+{
+    try {
+        $ligneCommande = LigneCommande::findOrFail($id);
+        $ligneCommande->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produit supprimé du panier avec succès'
+        ], Response::HTTP_OK); // Use the imported Response class
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la suppression du produit'
+        ], Response::HTTP_INTERNAL_SERVER_ERROR); // Use the imported Response class
     }
+}
 }
