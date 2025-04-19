@@ -19,6 +19,7 @@ class Commande extends Model
         'ville',
         'pays',
         'notes',
+        'ligne_commande_id',
         'total_produits',
         'frais_livraison',
         'total_general',
@@ -30,10 +31,8 @@ class Commande extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function produits()
+    public function LigneCommande()
     {
-        return $this->belongsToMany(Produite::class, 'ligne_commandes')
-            ->withPivot('quantite', 'prix_unitaire');
+        return $this->belongsTo(LigneCommande::class);
     }
 }
