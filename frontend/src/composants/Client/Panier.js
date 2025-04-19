@@ -8,7 +8,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import ValiderCommande from "./ValiderCommande";
 const Panier = () => {
-  const [IdUser, setIdUser] = useState(2);
+  const [IdUser, setIdUser] = useState(1);
   const [panier, setPanier] = useState([]);
   const [produites, setProduites] = useState([]);
   const [error, setError] = useState(null);
