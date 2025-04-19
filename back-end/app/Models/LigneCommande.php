@@ -14,9 +14,8 @@ class LigneCommande extends Model
         'id_produite',
     ];
 
-    // Relation avec le produit
     public function produit()
     {
-        return $this->belongsTo(Produit::class, 'id_produite');
+        return $this->belongsTo(Produite::class, 'id_produite');
     }
 }

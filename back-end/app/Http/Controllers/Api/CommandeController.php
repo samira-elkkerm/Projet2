@@ -30,7 +30,6 @@ class CommandeController extends Controller
             'ville' => 'required|string|max:255',
             'notes' => 'nullable|string',
             'frais_livraison' => 'required|numeric',
-            'produites' => 'required|array', // Validation que produites est un tableau
         ]);
 
         if ($validator->fails()) {
@@ -48,18 +47,12 @@ class CommandeController extends Controller
             $commande->adress = $request->adress;
             $commande->ville = $request->ville;
             $commande->notes = $request->notes;
+            $commande->ligne_commande_id = $request->ligne_commande_id;
             $commande->frais_livraison = $request->frais_livraison;
             $commande->total_produits = $request->total_produits;
-            $commande->total = $request->total; // ERREUR ! Cette colonne n'existe PAS !
+            $commande->total = $request->total;
             $commande->methode_paiement = 'à la livraison';
-            $commande->save(); {/*foreach ($request->produites as $produit) {
-                DB::table('commandes')->insert([ // Assurez-vous que cette table existe
-                    'nom' => $produit['nom'],
-                    'prix' => $produit['prix'],
-                    'quantite' => $produit['quantite'],
-                ]);
-            }*/
-            }
+            $commande->save();
         }
         return response()->json([
             'status' => 200,

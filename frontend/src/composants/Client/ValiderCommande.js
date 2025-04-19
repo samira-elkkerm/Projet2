@@ -140,48 +140,44 @@ function ValiderCommande({ panierItems }) {
     }
 
     try {
-      const produites = panierItems.map((item) => ({
-        id: item.produit.id,
-        nom_Produite: item.produit.nom,
-        prix_Produite: item.produit.prix,
-        quantite_Produite: item.quantité,
-      }));
+      for (const item of panierItems) {
+        const commandeData = {
+          user_id: JSON.parse(localStorage.getItem("userId")),
+          nom: userData.nom,
+          prenom: userData.prenom,
+          email: userData.email,
+          telephone: userData.telephone,
+          adress: userData.adress,
+          ville: userData.ville,
+          notes: userData.notes || "",
+          ligne_commande_id: item.id,
+          total_produits: item.produit.prix * item.quantité,
+          frais_livraison: fraisLivraison,
+          total: item.produit.prix * item.quantité + fraisLivraison,
+          methode_paiement: "à la livraison",
+        };
 
-      const commandeData = {
-        user_id: JSON.parse(localStorage.getItem("userId")),
-        nom: userData.nom,
-        prenom: userData.prenom,
-        email: userData.email,
-        telephone: userData.telephone,
-        adress: userData.adress,
-        ville: userData.ville,
-        notes: userData.notes || "",
-        total_produits: totalproduites,
-        frais_livraison: fraisLivraison,
-        total: totalGeneral,
-        produites: produites,
-        methode_paiement: "à la livraison",
-      };
+        const response = await fetch("http://localhost:8000/api/commandes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(commandeData),
+        });
 
-      const response = await fetch("http://localhost:8000/api/commandes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(commandeData),
-      });
+        const data = await response.json();
 
-      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-          (data.errors
-            ? Object.values(data.errors).flat().join(", ")
-            : "Erreur lors de la commande")
-        );
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+              (data.errors
+                ? Object.values(data.errors).flat().join(", ")
+                : "Erreur lors de la commande")
+          );
+        }
       }
 
 

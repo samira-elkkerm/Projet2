@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
         // Création de quelques produits (plantes)
         Produite::create([
             'nom' => 'Ficus',
-            'image' => 'ficus.jpg',
+            'image' => 'slider.png',
             'description' => 'Le Ficus est une plante d\'intérieur facile à entretenir.',
             'prix' => 150.00,
             'date' => now(),
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
 
         Produite::create([
             'nom' => 'Lavande',
-            'image' => 'lavande.jpg',
+            'image' => 'slider.png',
             'description' => 'La lavande est une plante d\'extérieur parfumée idéale pour le jardin.',
             'prix' => 80.00,
             'date' => now(),
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         Produite::create([
             'nom' => 'Nymphaea',
-            'image' => 'nymphaea.jpg',
+            'image' => 'slider.png,
             'description' => 'Le Nymphaea, ou nénuphar, est une plante aquatique pour bassin.',
             'prix' => 120.00,
             'date' => now(),
