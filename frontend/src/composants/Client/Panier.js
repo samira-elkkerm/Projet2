@@ -8,7 +8,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import ValiderCommande from "./ValiderCommande";
 const Panier = () => {
-  const [IdUser, setIdUser] = useState(1);
+  const [IdUser, setIdUser] = useState(2);
   const [panier, setPanier] = useState([]);
   const [produites, setProduites] = useState([]);
   const [error, setError] = useState(null);
@@ -19,7 +19,9 @@ const Panier = () => {
   useEffect(() => {
     const fetchPanier = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/ligne-commandes");
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/ligne-commandes"
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -95,25 +97,26 @@ const Panier = () => {
   };
 
   const DeleteProduitPanier = async (id) => {
-    const confirmDelete = window.confirm("Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?");
+    const confirmDelete = window.confirm(
+      "Êtes-vous sûr de vouloir supprimer ce produit de votre panier ?"
+    );
     if (!confirmDelete) return;
-  
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/ligne-commandes/${id}`,
         { method: "DELETE" }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to delete product");
       }
-  
+
       // Option 1: Rechargement simple de la page
       window.location.reload();
-      
+
       // OU Option 2: Mise à jour du state sans rechargement (meilleure pratique)
       // setPanier(prevPanier => prevPanier.filter(item => item.id !== id));
-      
     } catch (error) {
       console.error("Error deleting product:", error);
       setError(error.message);
@@ -140,7 +143,9 @@ const Panier = () => {
     );
   }
 
-  const userPanierItems = panier.filter((item) => item.id_utilisateur === IdUser);
+  const userPanierItems = panier.filter(
+    (item) => item.id_utilisateur === IdUser
+  );
 
   return (
     <div>
@@ -165,7 +170,8 @@ const Panier = () => {
                 <tr>
                   <td colSpan="5" className="text-center py-4">
                     <div className="alert alert-info">
-                      Votre panier est vide. <a href="/boutique">Commencez vos achats</a>
+                      Votre panier est vide.{" "}
+                      <a href="/boutique">Commencez vos achats</a>
                     </div>
                   </td>
                 </tr>
@@ -192,7 +198,9 @@ const Panier = () => {
                       <td>
                         <button
                           className="btn btn-success quantity-btn"
-                          onClick={() => handleDecrement(item.id, item.quantité)}
+                          onClick={() =>
+                            handleDecrement(item.id, item.quantité)
+                          }
                           disabled={item.quantité <= 1}
                         >
                           -
@@ -200,26 +208,32 @@ const Panier = () => {
                         <span className="quantity-value">{item.quantité}</span>
                         <button
                           className="btn btn-success quantity-btn"
-                          onClick={() => handleIncrement(item.id, item.quantité)}
+                          onClick={() =>
+                            handleIncrement(item.id, item.quantité)
+                          }
                         >
                           +
                         </button>
                       </td>
                       <td>{calculateItemTotal(item)} DH</td>
                       <td>
-                      <button 
-  onClick={() => DeleteProduitPanier(item.id)}
-  className="btn-delete"
-  title="Supprimer"
-  style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
->
-  <FontAwesomeIcon
-    icon={faTrash}
-    className="delete-icon"
-    style={{ color: 'red' }} // Ajout de la couleur rouge
-    size="lg"
-  />
-</button>
+                        <button
+                          onClick={() => DeleteProduitPanier(item.id)}
+                          className="btn-delete"
+                          title="Supprimer"
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="delete-icon"
+                            style={{ color: "red" }} // Ajout de la couleur rouge
+                            size="lg"
+                          />
+                        </button>
                       </td>
                     </tr>
                   );
