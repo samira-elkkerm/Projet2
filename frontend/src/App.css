@@ -230,38 +230,70 @@ nav a {
 
 
 
+.categories {
+  width: 250px; 
+  height: 250px; 
+  background-color: #dad8d1;
+  padding: 10px;
+  margin-left: -12px;
+  border-radius: 2px;
+  display:block;
+  position: relative;
+  
+
+}
+
 @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .categories {
-    max-width: 100%; 
-    margin-left: 0; 
-    padding: 15px;
-    gap: 15px;
+    width: 100%;
+    max-width: 400px;
   }
 }
 
-.categories {
-  position: relative;
-  font-family: "Roboto-Bold", Helvetica;
-  font-weight: 700;
-  color: #000000;
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 323px;
-  align-items: flex-start; /* Aligner les éléments à gauche */
-  gap: 20px;
-  background-color: #b6b6b630;
-  margin-left: 100px; /* Décalage vers la gauche */
-  padding: 10px;
-  box-sizing: border-box;
+.title-categories {
+  border-bottom: 4px solid #46A358;
+  display: inline-block;
+  padding-bottom: 5px;
+  width: 210px; 
 }
-
-  
 
 .categories ul {
-  list-style-type: none; 
+  list-style-type: none;
+  padding: 0;
 }
+
+.categories ul li {
+  margin-bottom: 10px;
+  margin-left: 40px; 
+}
+
+.categories ul li a {
+  color: black; 
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  padding: 5px;
+  transition: color 0.2s ease-in-out, font-weight 0.2s ease-in-out;
+}
+
+.categories ul li a:hover {
+  color: green; 
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.categories ul li a.selected {
+  color: green !important; 
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+
 .signup-container {
   display: flex;
   justify-content: center;
