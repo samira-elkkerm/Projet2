@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         Produite::create([
             'nom' => 'Nymphaea',
-            'image' => 'nymphaea.jpg',
+            'image' => 'slider.png',
             'description' => 'Le Nymphaea, ou nénuphar, est une plante aquatique pour bassin.',
             'prix' => 120.00,
             'date' => now(),
