@@ -92,3 +92,6 @@ Route::middleware('auth:api')->group(function () {
         return response()->json(['message' => 'Email verified successfully!']);
     })->name('verification.verify');
 });
+
+
+
