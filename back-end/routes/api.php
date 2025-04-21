@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\Api\VilleController;
-
+use App\Http\Controllers\API\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,4 +94,4 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
-
+Route::post('/send-email', [ContactController::class, 'sendEmail']);
