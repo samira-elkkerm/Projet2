@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Produite;
 
 class ProduitController extends Controller
 {
@@ -12,7 +13,7 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Produite::all());
     }
 
     /**
@@ -28,7 +29,7 @@ class ProduitController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json(Produite::find($id));
     }
 
     /**

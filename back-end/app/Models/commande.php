@@ -31,6 +31,11 @@ class Commande extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function produits()
+    {
+        return $this->belongsToMany(Produite::class, 'ligne_commandes')
+            ->withPivot('quantite', 'prix_unitaire');
+    }
     public function LigneCommande()
     {
         return $this->belongsTo(LigneCommande::class);
