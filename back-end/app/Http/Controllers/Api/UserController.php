@@ -36,6 +36,7 @@ class UserController extends Controller
         }
 
         return response()->json([
+            'id' => $user->id,
             'nom' => $user->nom,
             'prenom' => $user->prenom,
             'ville' => $user->ville,
@@ -50,7 +51,27 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->nom = $request->input('nom');
+        $user->prenom = $request->input('prenom');
+        $user->ville = $request->input('ville');
+        $user->adress = $request->input('adress');
+        $user->email = $request->input('email');
+        $user->telephone = $request->input('telephone');
+
+        $user->save();
+
+        return response()->json([
+            'message' => "L'utilisateur a été mis à jour avec succès",
+            'id' => $user->id,
+            'nom' => $user->nom,
+            'prenom' => $user->prenom,
+            'ville' => $user->ville,
+            'adress' => $user->adress,
+            'email' => $user->email,
+            'telephone' => $user->telephone,
+        ]);
     }
 
     /**

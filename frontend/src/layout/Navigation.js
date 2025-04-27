@@ -5,25 +5,52 @@ import {
   faSearch,
   faShoppingCart,
   faUser,
+  faXmark,
+  faArrowLeft
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+
+import { fetchUtilisateur } from "../redux/actions/utilisateursActions";
+
+import Profile from "../composants/Client/Profile"
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+  const { panier } = useSelector((state) => state.panier);
+  const { utilisateurActuel } = useSelector((state) => state.utilisateurs);
+
+  console.log('User: ', utilisateurActuel);
+
   const location = useLocation();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     setIsAuthenticated(!!token);
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      const id = localStorage.getItem("userId");
+      dispatch(fetchUtilisateur(id));
+    }
+  }, [isAuthenticated, dispatch]);
+
   const handleLoginClick = () => {
     navigate("/Connecter");
   };
 
   const handleProfileClick = () => {
-    navigate("/Profile");
+    setShowProfile(!showProfile);
+    setShowEditProfile(false);
+  };
+
+  const handleEditProfileClick = () => {
+    setShowEditProfile(!showEditProfile);
   };
 
   const isActive = (path) => (location.pathname === path ? "active" : "");
@@ -62,18 +89,36 @@ const Navigation = () => {
               </Link>
             </li>
             <li className="nav-item ms-3">
-              <Link to="/Panier" aria-label="Cart">
+              <Link to="/Panier" aria-label="Cart" className="position-relative">
                 <FontAwesomeIcon icon={faShoppingCart} className="nav-icon" />
+                <span className="cart-count">{panier ? panier.length : 0}</span>
               </Link>
             </li>
             {isAuthenticated ? (
-              <li className="nav-item ms-3">
+              <li className="position-relative nav-item ms-3">
                 <button
                   className="nav-btn btn btn-success"
                   onClick={handleProfileClick}
                 >
-                  <FontAwesomeIcon icon={faUser} className="nav-icon" />
+                  <FontAwesomeIcon icon={faUser} className="nav-icon user-icon" />
                 </button>
+                <div className={`popup-cart ${showProfile ? "visible" : "invisible"} ${showEditProfile ? "more-w" : "normal-w"}`}>
+                  <button
+                    className="popup-close"
+                    onClick={handleProfileClick}
+                  >
+                    <FontAwesomeIcon icon={faXmark} className="popup-close-icon" />
+                  </button>
+                  {showEditProfile && (
+                    <button
+                      className="profile-back"
+                      onClick={handleEditProfileClick}
+                    >
+                      <FontAwesomeIcon icon={faArrowLeft} className="popup-close-icon" />
+                    </button>
+                  )}
+                  <Profile showEditProfile={showEditProfile} handleEditProfileClick={handleEditProfileClick} utilisateur={utilisateurActuel} />
+                </div>
               </li>
             ) : (
               <li className="nav-item ms-3">

@@ -10,6 +10,7 @@ import categoriesReducer from './reducers/categoriesReducer';
 // Combinaison des reducers
 const rootReducer = combineReducers({
   produits: produitsReducer,
+  produit: produitsReducer,
   utilisateurs: utilisateursReducer,
   panier: panierReducer,
   commandes: commandesReducer,

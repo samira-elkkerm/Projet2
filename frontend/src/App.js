@@ -6,6 +6,8 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import store from "./redux/store";
 import Accueil from "./composants/Client/Accueil";
 import Boutique from "./composants/Client/Boutique";
+import Produits from "./composants/Client/Produits";
+import Produit from "./composants/Client/Produit";
 import Contact from "./composants/Client/Contact";
 import Panier from "./composants/Client/Panier";
 import Connecter from "./composants/Connecter";
@@ -25,6 +27,8 @@ const App = () => (
       <Routes>
         <Route path="/" element={<Accueil />} />
         <Route path="/Boutique" element={<Boutique />} />
+        <Route path="/Produits" element={<Produits />} />
+        <Route path="/Produits/:id" element={<Produit />} />
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Panier" element={<Panier />} />
         <Route path="/Valider_Commande" element={<ValiderCommande />} />
