@@ -8,8 +8,16 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import ValiderCommande from "./ValiderCommande";
 const Panier = () => {
-  const [IdUser, setIdUser] = useState(1);
-  const [panier, setPanier] = useState([]);
+  const [IdUser, setIdUser] = useState();
+
+  useEffect(() => {
+    const storedId = localStorage.getItem('userId');
+
+    if (storedId !== null) {
+      setIdUser(Number(storedId));
+    }
+  }, []);
+    const [panier, setPanier] = useState([]);
   const [produites, setProduites] = useState([]);
   const [error, setError] = useState(null);
   const [showValidation, setShowValidation] = useState(false);
@@ -263,16 +271,17 @@ const Panier = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    <button className="btn btn-success" onClick={handleClick}>
-                      Valider Commande
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a href="/boutique">Continuer Vos Achats</a>
-                  </td>
+                <div className="card-footer bg-white border-top">
+                <button 
+                  className="btn btn-success w-100 mb-2"
+                  onClick={() => setShowValidation(true)}
+                >
+                  Valider Commande
+                </button>
+                <a href="/boutique" className="btn btn-outline-secondary w-100">
+                  Continuer vos achats
+                </a>
+              </div>
                 </tr>
               </tbody>
             </table>
@@ -282,42 +291,42 @@ const Panier = () => {
 
       {/* Suggestions de produits */}
       {userPanierItems.length > 0 && (
-        <div className="produits-container my-4 container">
-          <h5>D'autres suggestions pour vous</h5>
-          <div className="produits-grid">
-            {produites.map((produit) => (
-              <div
-                key={produit.id}
-                className="produit-card"
-                onMouseEnter={() => setHoveredProduct(produit.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-              >
-                <div className="produit-image-container">
-                  <img
-                    src={`http://127.0.0.1:8000/images/${produit.image}`}
-                    alt={produit.nom}
-                    className="produit-image"
+  <div className="produits-container my-4 container">
+    <h5>D'autres suggestions pour vous</h5>
+    <div className="produits-grid">
+      {produites.slice(-8).map((produit) => (
+        <div
+          key={produit.id}
+          className="produit-card"
+          onMouseEnter={() => setHoveredProduct(produit.id)}
+          onMouseLeave={() => setHoveredProduct(null)}
+        >
+          <div className="produit-image-container">
+            <img
+              src={`http://127.0.0.1:8000/images/${produit.image}`}
+              alt={produit.nom}
+              className="produit-image"
+            />
+            {hoveredProduct === produit.id && (
+              <div className="bg-gray">
+                <div className="cart-icon-overlay">
+                  <FontAwesomeIcon
+                    icon={faShoppingCart}
+                    className="cart-icon"
                   />
-                  {hoveredProduct === produit.id && (
-                    <div className="bg-gray">
-                      <div className="cart-icon-overlay">
-                        <FontAwesomeIcon
-                          icon={faShoppingCart}
-                          className="cart-icon"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className="produit-details">
-                  <h3 className="produit-nom">{produit.nom}</h3>
-                  <p className="produit-prix">{produit.prix} DH</p>
                 </div>
               </div>
-            ))}
+            )}
+          </div>
+          <div className="produit-details">
+            <h3 className="produit-nom">{produit.nom}</h3>
+            <p className="produit-prix">{produit.prix} DH</p>
           </div>
         </div>
-      )}
+      ))}
+    </div>
+  </div>
+)}
 
       <Footer />
     </div>
