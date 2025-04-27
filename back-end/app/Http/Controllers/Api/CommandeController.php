@@ -22,6 +22,7 @@ class CommandeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'numero_commande' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|string|max:255',
@@ -39,6 +40,7 @@ class CommandeController extends Controller
             ]);
         } else {
             $commande = new Commande();
+            $commande->numero_commande = $request->numero_commande;
             $commande->user_id = $request->user_id;
             $commande->nom = $request->nom;
             $commande->prenom = $request->prenom;
