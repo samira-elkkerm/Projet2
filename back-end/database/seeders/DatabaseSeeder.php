@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'nom' => 'Doe',
             'prenom' => 'John',
             'adress' => '123 Main St',
-            'email' => 'john.doe@example.com',
+            'email' => 'mytoudert@gmail.com',
             'password' => Hash::make('password123'), // Assurez-vous de hasher le mot de passe
             'telephone' => '1234567890',
             'role' => 'admin', // ou 'client' selon le cas

@@ -10,6 +10,8 @@ import Contact from "./composants/Client/Contact";
 import Panier from "./composants/Client/Panier";
 import Connecter from "./composants/Connecter";
 import Inscrire from "./composants/Inscrire";
+import ForgotPassword from "./composants/ForgotPassword";
+import ResetPassword from "./composants/ResetPassword";
 import TableauBord from "./composants/Admin/TableauBord";
 import GestionCommandes from "./composants/Admin/GestionCommandes";
 import GestionUtilisateur from "./composants/Admin/GestionUtilisateur";
@@ -29,6 +31,8 @@ const App = () => (
 
         <Route path="/Connecter" element={<Connecter />} />
         <Route path="/Inscrire" element={<Inscrire />} />
+        <Route path="/Forgot-Password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword/>} />
 
         <Route path="/Admin/TableauBord" element={<TableauBord />} />
         <Route path="/GestionCommandes" element={<GestionCommandes />} />

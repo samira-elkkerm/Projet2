@@ -71,12 +71,8 @@ const Connecter = () => {
       console.log(data);
 
       if (data.token && data.user) {
-        console.log("Token reçu:", data.token);
-        console.log("Utilisateur reçu:", data.user);
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("userId", data.user.id);
-        console.log("Token stocké dans localStorage:", data.token);
-        console.log("ID utilisateur stocké dans localStorage:", data.user.id);
         if (data.user.role === "admin") {
           navigate("/Admin/TableauBord");
         } else if (data.user.role === "client") {
@@ -181,6 +177,9 @@ const Connecter = () => {
           >
             {isLoading ? "Connexion en cours..." : "Se connecter"}
           </button>
+          <div className="text-center mt-3">
+              <Link to="/forgot-password">Mot de passe oublié ?</Link>
+          </div>
         </form>
       </div>
     </div>
