@@ -1,40 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SidebarMenu from '../../layout/MenuAdmin';
 import { Table, Button, Form } from 'react-bootstrap';
 import { BiTrash, BiShow, BiSearch } from 'react-icons/bi';
 
 const GestionCommandes = () => {
-  // Données de démonstration
-  const initialCommandes = [
-    { id: 'C.001', nom: 'Ahmed', date: '01/12/2025', qte: 11, montant: 20000.00, status: 'Annulée' },
-    { id: 'C.002', nom: 'Karima', date: '02/12/2025', qte: 5, montant: 15000.00, status: 'Livrée' },
-    { id: 'C.003', nom: 'Mohamed', date: '03/12/2025', qte: 8, montant: 18000.00, status: 'En cours' },
-    { id: 'C.004', nom: 'Fatima', date: '04/12/2025', qte: 3, montant: 7500.00, status: 'Annulée' },
-    { id: 'C.005', nom: 'Youssef', date: '05/12/2025', qte: 15, montant: 30000.00, status: 'Livrée' },
-  ];
-
-  const [commandes, setCommandes] = useState(initialCommandes);
+  const [commandes, setCommandes] = useState([]);
+  const [groupedCommandes, setGroupedCommandes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCommandes = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch('http://localhost:8000/api/commandes');
+        
+        if (!response.ok) {
+          throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data || !data.commandes) {
+          throw new Error('Réponse API invalide');
+        }
+
+        setCommandes(data.commandes);
+        const grouped = groupByNumeroCommande(data.commandes);
+        setGroupedCommandes(grouped);
+        
+      } catch (err) {
+        console.error("Erreur API:", err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCommandes();
+  }, []);
+
+  const groupByNumeroCommande = (commandes) => {
+    const grouped = {};
+    
+    commandes.forEach(commande => {
+      if (!grouped[commande.numero_commande]) {
+        grouped[commande.numero_commande] = {
+          id: commande.numero_commande,
+          nom: `${commande.prenom} ${commande.nom}`,
+          date: new Date(commande.created_at).toLocaleDateString('fr-FR'),
+          qte: commande.total_produits,
+          montant: commande.total,
+          status: commande.statut,
+          commandesDetails: [commande]
+        };
+      } else {
+        grouped[commande.numero_commande].qte += commande.total_produits;
+        grouped[commande.numero_commande].montant += commande.total;
+        grouped[commande.numero_commande].commandesDetails.push(commande);
+      }
+    });
+    
+    return Object.values(grouped);
+  };
 
   const handleSearch = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
 
     if (term === '') {
-      setCommandes(initialCommandes);
+      const grouped = groupByNumeroCommande(commandes);
+      setGroupedCommandes(grouped);
       return;
     }
 
-    const filtered = initialCommandes.filter(commande => {
+    const filtered = commandes.filter(commande => {
       return (
         commande.nom.toLowerCase().includes(term) ||
-        commande.date.includes(term) ||
-        commande.status.toLowerCase().includes(term)
+        commande.prenom.toLowerCase().includes(term) ||
+        commande.numero_commande.toLowerCase().includes(term) ||
+        new Date(commande.created_at).toLocaleDateString('fr-FR').includes(term) ||
+        commande.statut.toLowerCase().includes(term)
       );
     });
 
-    setCommandes(filtered);
+    const groupedFiltered = groupByNumeroCommande(filtered);
+    setGroupedCommandes(groupedFiltered);
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
+        <SidebarMenu />
+        <div style={styles.mainContent}>
+          <div style={styles.contentWrapper}>
+            <h2 style={styles.title}>Commandes</h2>
+            <p>Chargement en cours...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
+        <SidebarMenu />
+        <div style={styles.mainContent}>
+          <div style={styles.contentWrapper}>
+            <h2 style={styles.title}>Commandes</h2>
+            <div className="alert alert-danger">
+              Erreur lors du chargement des commandes: {error}
+            </div>
+            <Button variant="primary" onClick={() => window.location.reload()}>
+              Réessayer
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
@@ -49,7 +137,7 @@ const GestionCommandes = () => {
               <BiSearch style={styles.searchIcon} />
               <Form.Control
                 type="text"
-                placeholder="Rechercher par nom, date ou statut..."
+                placeholder="Rechercher par nom, numéro de commande, date ou statut..."
                 value={searchTerm}
                 onChange={handleSearch}
                 style={styles.searchInput}
@@ -62,18 +150,18 @@ const GestionCommandes = () => {
             <Table borderless responsive style={styles.table}>
               <thead>
                 <tr style={styles.tableHeader}>
-                  <th style={styles.thCell}>ID</th>
-                  <th style={styles.thCell}>Nom Util</th>
+                  <th style={styles.thCell}>N° Commande</th>
+                  <th style={styles.thCell}>Client</th>
                   <th style={styles.thCell}>Date</th>
                   <th style={styles.thCell}>Quantité</th>
-                  <th style={styles.thCell}>Montant</th>
-                  <th style={styles.thCell}>Status</th>
-                  <th style={styles.thCell}>Action</th>
+                  <th style={styles.thCell}>Montant Total</th>
+                  <th style={styles.thCell}>Statut</th>
+                  <th style={styles.thCell}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {commandes.length > 0 ? (
-                  commandes.map((commande, index) => (
+                {groupedCommandes.length > 0 ? (
+                  groupedCommandes.map((commande, index) => (
                     <tr key={index} style={styles.tableRow}>
                       <td style={styles.tdCell}>{commande.id}</td>
                       <td style={styles.tdCell}>{commande.nom}</td>
@@ -82,7 +170,7 @@ const GestionCommandes = () => {
                       <td style={styles.tdCell}>{commande.montant.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} DH</td>
                       <td style={styles.tdCell}>
                         <span style={getStatusStyle(commande.status)}>
-                          {commande.status}
+                          {commande.status.replace('_', ' ')}
                         </span>
                       </td>
                       <td style={{...styles.tdCell, ...styles.actionsCell}}>
@@ -203,15 +291,18 @@ const getStatusStyle = (status) => {
     fontSize: '12px',
     fontWeight: '600',
     display: 'inline-block',
-    minWidth: '80px'
+    minWidth: '80px',
+    textTransform: 'capitalize'
   };
 
   switch (status) {
-    case 'Livrée':
+    case 'livrée':
       return { ...baseStyle, backgroundColor: '#e6f7ee', color: '#28a745' };
-    case 'En cours':
+    case 'en_cours':
       return { ...baseStyle, backgroundColor: '#fff8e6', color: '#ffc107' };
-    case 'Annulée':
+    case 'en_attente':
+      return { ...baseStyle, backgroundColor: '#e6f0ff', color: '#007bff' };
+    case 'annulée':
       return { ...baseStyle, backgroundColor: '#fde8e8', color: '#dc3545' };
     default:
       return { ...baseStyle, backgroundColor: '#f8f9fa', color: '#6c757d' };
