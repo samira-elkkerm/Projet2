@@ -142,8 +142,23 @@ const ContactForm = () => {
           <button type="submit">Envoyer</button>
         </form>
 
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {successMessage && (
+          <div className="overlay">
+            <div className="success-modal">
+              <h3>Succès</h3>
+              <p>{successMessage}</p>
+            </div>
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="overlay">
+            <div className="error-modal">
+              <h3>Erreur</h3>
+              <p>{errorMessage}</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
