@@ -52,7 +52,7 @@ const SidebarMenu = () => {
         </li>
         <li style={styles.menuItem}>
           <Link
-            to="/GestionUtilisateur"
+            to="/GestionUtilisateurs"
             style={activeItem === 'users' ? styles.activeMenuLink : styles.menuLink}
             onClick={() => handleItemClick('users')}
           >

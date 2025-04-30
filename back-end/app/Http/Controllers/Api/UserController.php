@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -13,7 +15,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return response()->json([
+            'status' => 200,
+            'users' => $users
+        ]);
     }
 
     /**
@@ -21,7 +27,42 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'ville' => 'nullable|string|max:255',
+            'adress' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8',
+            'telephone' => 'required|string|max:20',
+            'Statut' => 'nullable|string|in:actif,inactif',
+            'role' => 'nullable|string|in:client,admin',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages()
+            ], 422);
+        }
+
+        $user = User::create([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'ville' => $request->ville ?? '',
+            'adress' => $request->adress,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telephone' => $request->telephone,
+            'Statut' => $request->Statut,
+            'role' => $request->role,
+        ]);
+
+        return response()->json([
+            'status' => 201,
+            'message' => 'Utilisateur créé avec succès',
+            'user' => $user
+        ], 201);
     }
 
     /**
@@ -32,17 +73,27 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return response()->json([
+                'status' => 404,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
         }
 
         return response()->json([
-            'id' => $user->id,
-            'nom' => $user->nom,
-            'prenom' => $user->prenom,
-            'ville' => $user->ville,
-            'adress' => $user->adress,
-            'email' => $user->email,
-            'telephone' => $user->telephone,
+            'status' => 200,
+            'user' => [
+                'id' => $user->id,
+                'nom' => $user->nom,
+                'prenom' => $user->prenom,
+                'ville' => $user->ville,
+                'adress' => $user->adress,
+                'email' => $user->email,
+                'telephone' => $user->telephone,
+                'Statut' => $user->Statut,
+                'role' => $user->role,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ]
         ]);
     }
 
@@ -51,26 +102,46 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
-        $user->nom = $request->input('nom');
-        $user->prenom = $request->input('prenom');
-        $user->ville = $request->input('ville');
-        $user->adress = $request->input('adress');
-        $user->email = $request->input('email');
-        $user->telephone = $request->input('telephone');
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
 
-        $user->save();
+        $validator = Validator::make($request->all(), [
+            'nom' => 'sometimes|string|max:255',
+            'prenom' => 'sometimes|string|max:255',
+            'ville' => 'nullable|string|max:255',
+            'adress' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,'.$id,
+            'password' => 'sometimes|string|min:8',
+            'telephone' => 'sometimes|string|max:20',
+            'Statut' => 'nullable|string|in:actif,inactif',
+            'role' => 'nullable|string|in:client,admin',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages()
+            ], 422);
+        }
+
+        $data = $request->all();
+        
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
 
         return response()->json([
-            'message' => "L'utilisateur a été mis à jour avec succès",
-            'id' => $user->id,
-            'nom' => $user->nom,
-            'prenom' => $user->prenom,
-            'ville' => $user->ville,
-            'adress' => $user->adress,
-            'email' => $user->email,
-            'telephone' => $user->telephone,
+            'status' => 200,
+            'message' => 'Utilisateur mis à jour avec succès',
+            'user' => $user
         ]);
     }
 
@@ -79,6 +150,20 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Utilisateur non trouvé'
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Utilisateur supprimé avec succès'
+        ]);
     }
 }

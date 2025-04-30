@@ -16,7 +16,7 @@ import ForgotPassword from "./composants/ForgotPassword";
 import ResetPassword from "./composants/ResetPassword";
 import TableauBord from "./composants/Admin/TableauBord";
 import GestionCommandes from "./composants/Admin/GestionCommandes";
-import GestionUtilisateur from "./composants/Admin/GestionUtilisateur";
+import GestionUtilisateurs from "./composants/Admin/Utilisateurs/GestionUtilisateurs";
 import GestionProduits from "./composants/Admin/GestionProduits";
 import GestionPaiement from "./composants/Admin/GestionPaiement";
 import ValiderCommande from "./composants/Client/ValiderCommande";
@@ -40,7 +40,7 @@ const App = () => (
 
         <Route path="/Admin/TableauBord" element={<TableauBord />} />
         <Route path="/GestionCommandes" element={<GestionCommandes />} />
-        <Route path="/GestionUtilisateur" element={<GestionUtilisateur />} />
+        <Route path="/GestionUtilisateurs" element={<GestionUtilisateurs/>} />    
         <Route path="/GestionProduits" element={<GestionProduits />} />
         <Route path="/GestionPaiement" element={<GestionPaiement />} />
 
