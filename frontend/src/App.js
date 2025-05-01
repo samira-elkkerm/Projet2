@@ -17,7 +17,7 @@ import ResetPassword from "./composants/ResetPassword";
 import TableauBord from "./composants/Admin/TableauBord";
 import GestionCommandes from "./composants/Admin/GestionCommandes";
 import GestionUtilisateurs from "./composants/Admin/Utilisateurs/GestionUtilisateurs";
-import GestionProduits from "./composants/Admin/GestionProduits";
+import GestionProduits from "./composants/Admin/Produits/GestionProduits";
 import GestionPaiement from "./composants/Admin/GestionPaiement";
 import ValiderCommande from "./composants/Client/ValiderCommande";
 
