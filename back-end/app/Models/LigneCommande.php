@@ -1,18 +1,20 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LigneCommande extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'quantité',
-        'id_produite',
+        'id_utilisateur',
+        'id_produite'
     ];
+
+    public function utilisateur()
+    {
+        return $this->belongsTo(User::class, 'id_utilisateur');
+    }
 
     public function produit()
     {

@@ -67,5 +67,33 @@ class CommandeController extends Controller
 
     public function update(Request $request, $id) {}
 
-    public function destroy($id) {}
+    public function destroy($numeroCommande)
+{
+    try {
+        // Vérifier d'abord si des commandes existent avec ce numéro
+        $commandes = Commande::where('numero_commande', $numeroCommande)->get();
+
+        if ($commandes->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Aucune commande trouvée avec ce numéro.'
+            ], 404);
+        }
+
+        // Supprimer toutes les commandes avec ce numéro
+        $deleted = Commande::where('numero_commande', $numeroCommande)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Toutes les commandes avec le numéro '.$numeroCommande.' ont été supprimées avec succès.',
+            'deleted_count' => $deleted
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Erreur lors de la suppression des commandes: '.$e->getMessage()
+        ], 500);
+    }
+}
 }

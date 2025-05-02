@@ -13,8 +13,12 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        return response()->json(Produite::all());
-    }
+        $produites = Produite::all();
+        
+        return response()->json([
+            "produites" => $produites
+        ]);   
+     }    
 
     /**
      * Store a newly created resource in storage.
