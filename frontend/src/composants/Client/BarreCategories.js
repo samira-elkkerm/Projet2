@@ -18,28 +18,26 @@ const BarreCategories = () => {
   };
 
   return (
-    <div className="container">
-      <div className="categories">
-        <h3 className="title-categories"><strong>Catégories</strong></h3>
-        <ul>
-          {categories && categories.length > 0 ? (
-            categories.map((categorie) => (
-              <li key={categorie.id}>
-                <Link
-                  to={`/boutique?categorie=${categorie.id}`}
-                  style={{ textDecoration: 'none' }}
-                  className={selectedCategory === categorie.id ? "selected" : ""}
-                  onClick={() => handleCategoryClick(categorie.id)}
-                >
-                  {categorie.type}
-                </Link>
-              </li>
-            ))
-          ) : (
-            <p>Aucune catégorie disponible.</p>
-          )}
-        </ul>
-      </div>
+    <div className="categories">
+      <h3 className="title-categories"><strong>Catégories</strong></h3>
+      <ul>
+        {categories && categories.length > 0 ? (
+          categories.map((categorie) => (
+            <li key={categorie.id}>
+              <Link
+                to={`/boutique?categorie=${categorie.id}`}
+                style={{ textDecoration: 'none' }}
+                className={selectedCategory === categorie.id ? "selected" : ""}
+                onClick={() => handleCategoryClick(categorie.id)}
+              >
+                {categorie.type}
+              </Link>
+            </li>
+          ))
+        ) : (
+          <p>Aucune catégorie disponible.</p>
+        )}
+      </ul>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const Boutique = () => {
               throw new Error("Network response was not ok");
             }
             const data = await response.json();
-            setProduites(data.produites);
+            setProduites(data);
           } catch (error) {
             console.error("Error fetching panier data:", error);
           }

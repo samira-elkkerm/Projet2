@@ -1,157 +1,273 @@
 /* Style pour la bordure verte en bas des en-têtes */
 .border-bottom-green {
-    border-bottom: 2px solid #46A358 !important; /* Vert Bootstrap (#46A358) */
-  }
-  
-  /* Style pour le tableau personnalisé */
-  .custom-table {
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #212529;
-  }
-  
-  .custom-table th,
-  .custom-table td {
-    padding: 0.75rem;
-    vertical-align: middle; /* Centrer verticalement */
-    border-top: none;
-    text-align: center; /* Centrer horizontalement */
-  }
-  
-  .custom-table td {
-    font-weight: bold;
-  }
-  
-  .custom-table td a {
-    color: #46A358;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-size: large;
-    font-weight: 500;
-  }
-  
-  .bold-text {
-    color: #46A358;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    font-size: large;
-    font-weight: bold;
-  }
-  
-  .custom-table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Effet de survol */
-  }
-  
-  /* Style pour les boutons */
-  .btn-success {
-    background-color: #46A358;
-    border-color: #46A358;
-  }
-  
-  .btn-success:hover {
-    background-color: white;
-    border-color: #46A358;
-    color: #46A358;
-  }
-  
-  .btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
-  }
-  
-  .btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: #fff;
-  }
-  
-  /* Style pour la mise en page des tables */
-  .product-table {
-    flex: 0 0 70%; /* 70% de la largeur */
-  }
-  
-  .cart-summary {
-    flex: 0 0 30%; /* 30% de la largeur */
-  }
-  
-  /* Style pour la grille de produits */
-  .produits-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 produits par ligne */
-    gap: 20px; /* Espacement entre les produits */
-  }
-  
-  .produit-card {
-    border-radius: 8px;
-    overflow: hidden;
-    text-align: left;
-    transition: transform 0.3s ease;
-  }
-  
-  .produit-card:hover {
-    transform: scale(1.05); /* Effet de zoom au survol */
-  }
-  
-  .produit-image-container {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .produit-image {
-    width: 100%;
-    height: auto;
-    max-width: 250px; /* Limite la largeur de l'image */
-  }
-  
-  .cart-icon-overlay {
+  border-bottom: 2px solid #46A358 !important; /* Vert Bootstrap (#46A358) */
+}
+
+/* Style pour le tableau personnalisé */
+.custom-table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem;
+  vertical-align: middle; /* Centrer verticalement */
+  border-top: none;
+  text-align: center; /* Centrer horizontalement */
+}
+
+.custom-table td {
+  font-weight: bold;
+}
+
+.custom-table td a {
+  color: #46A358;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: large;
+  font-weight: 500;
+}
+
+.bold-text {
+  color: #46A358;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-size: large;
+  font-weight: bold;
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05); /* Effet de survol */
+}
+
+/* Style pour les boutons */
+.btn-success {
+  background-color: #46A358;
+  border-color: #46A358;
+}
+
+.btn-success:hover {
+  background-color: white;
+  border-color: #46A358;
+  color: #46A358;
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Style pour la mise en page des tables */
+.product-table {
+  flex: 0 0 70%; /* 70% de la largeur */
+}
+
+.cart-summary {
+  flex: 0 0 30%; /* 30% de la largeur */
+}
+
+/* Style pour la grille de produits */
+.produits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 produits par ligne */
+  gap: 20px; /* Espacement entre les produits */
+}
+
+.produit-card {
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.produit-card:hover {
+  transform: scale(1.05); /* Effet de zoom au survol */
+}
+
+.produit-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.produit-image {
+  width: 100%;
+  height: auto;
+  max-width: 250px; /* Limite la largeur de l'image */
+}
+
+.cart-icon-overlay {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8); /* Fond gris clair semi-transparent */
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.cart-icon {
+  color: #46A358; /* Couleur verte pour l'icône */
+  font-size: 1.5rem; /* Taille de l'icône */
+}
+
+.produit-details {
+  padding: 10px;
+}
+
+.produit-nom {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.produit-prix {
+  font-size: 1rem;
+  color: #46A358;
+  font-weight: bold;
+}
+
+  /* Cart design */
+
+  .popup-cart {
     position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.8); /* Fond gris clair semi-transparent */
-    padding: 10px;
+    top: 100%;
+    border: 3px solid #46A358;
+    padding: 2rem 1rem;
+    right: 0;
+    background-color: white;
+    border-radius: 4px;
+    margin-top: 1rem;
+  }
+  .popup-cart.normal-w {
+    width: 20rem;
+  }
+  .popup-cart.more-w {
+    width: 30rem;
+  }
+  .popup-close {
+    border: 1px solid #46A358;
     border-radius: 50%;
+    width: 1.2rem;
+    height: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 8px;
   }
-  
-  .cart-icon {
-    color: #46A358; /* Couleur verte pour l'icône */
-    font-size: 1.5rem; /* Taille de l'icône */
+  .popup-close-icon {
+    color: white;
   }
-  
-  .produit-details {
-    padding: 10px;
+
+  .profile-back {
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 8px;
+    border: none;
+    background: #46A358;
   }
-  
-  .produit-nom {
-    font-size: 1.2rem;
-    margin: 10px 0;
-  }
-  
-  .produit-prix {
-    font-size: 1rem;
-    color: #46A358;
-    font-weight: bold;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+.popup-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.profile-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 2px solid #46A358;
+}
+
+.profile-icon {
+  color: #46A358;
+  font-size: 2rem;
+}
+
+.profile-name {
+  text-transform: capitalize;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.profile-button {
+  color: #46A358;
+  background-color: rgba(182, 182, 182, 0.19);
+  padding: 4px 1rem;
+  border: 1px solid #46A358;
+  border-radius: 8px;
+}
+
+.profile-button:hover {
+  background-color: #46A358;
+  color: white;
+}
+
+.profile-button-change {
+  background-color: #46A358;
+  color: white;
+  padding: 4px 1.5rem;
+  border: 1px solid #46A358;
+  border-radius: 8px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.profile-button-change:hover {
+  color: #46A358;
+  background-color: white;
+}
+
+.profile-button-submit {
+  background-color: #46A358;
+  color: white;
+  padding: 4px 3rem;
+  border: 1px solid #46A358;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.cart-count {
+position: absolute;
+top: -5px;
+right: -10px;
+background-color: #e7f3e9;
+color: #46A358;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+font-size: 12px;
+font-weight: bold;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+}

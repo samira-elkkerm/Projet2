@@ -1,24 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-
-import { fetchProduit } from '../../redux/actions/produitsActions';
-import { modifierQuantite } from '../../redux/actions/panierActions';
 
 import '../../App.css';
 
 const UnProduit = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
-  const produit = useSelector((state) => state.produit);
+  const [produit, setProduit] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchProduit(id));
-  }, [dispatch, id]);
+    const fetchPanier = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/produites");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setProduit(data?.find((produit) => produit.id === parseInt(id)) || null);
+      } catch (error) {
+        console.error("Error fetching panier data:", error);
+      }
+    };
+
+    fetchPanier();
+  }, [id]);
 
   const ajouterPanier = (produit) => {
     // Ajouter le produit au panier
-    dispatch(modifierQuantite(produit.id, 1));
+    alert(`Produit ${produit.nom} ajouté au panier.`);
   };
 
   return (
