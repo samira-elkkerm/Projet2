@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SidebarMenu from '../../layout/MenuAdmin';
 import { Table, Button, Form, Modal } from 'react-bootstrap';
-import { BiTrash, BiShow, BiSearch } from 'react-icons/bi';
+import { BiTrash, BiShow, BiSearch, BiEdit } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
 const GestionCommandes = () => {
@@ -24,7 +24,63 @@ const GestionCommandes = () => {
   console.log(panierItems);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+ const [isSubmitting, setIsSubmitting] = useState(false);
+const [showEditStatusModal, setShowEditStatusModal] = useState(false);
+const [newStatus, setNewStatus] = useState('');
+const [commandeToEdit, setCommandeToEdit] = useState(null);
+
+// Fonction pour gérer l'ouverture de la modal d'édition
+const handleEditStatus = (commande) => {
+  setCommandeToEdit(commande);
+  setNewStatus(commande.status);
+  setShowEditStatusModal(true);
+};
+
+// Fonction pour mettre à jour le statut
+const handleUpdateStatus = async () => {
+  if (!commandeToEdit || !newStatus) return;
+
+  setIsSubmitting(true);
+  
+  try {
+    const response = await fetch(`http://localhost:8000/api/commandes/${commandeToEdit.id}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    // Vérifiez d'abord le type de contenu
+    const contentType = response.headers.get('content-type');
+    
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text();
+      throw new Error(`Réponse inattendue : ${text.substring(0, 100)}...`);
+    }
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `Erreur ${response.status}`);
+    }
+
+    // Mise à jour de l'état local
+    setGroupedCommandes(prev => prev.map(cmd => 
+      cmd.id === commandeToEdit.id ? { ...cmd, status: newStatus } : cmd
+    ));
+
+    setShowEditStatusModal(false);
+    alert('Statut mis à jour avec succès');
+  } catch (error) {
+    console.error('Erreur API:', error);
+    alert(`Erreur : ${error.message}`);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   const [userData, setUserData] = useState({
     nom: "",
     prenom: "",
@@ -537,6 +593,9 @@ const GestionCommandes = () => {
                       <td style={{ ...styles.tdCell, ...styles.actionsCell }}>
                         <Button variant="outline-success" size="sm" style={styles.iconButton} onClick={() => handleShowDetails(commande)}>
                           <BiShow />
+                        </Button>
+                           <Button variant="outline-primary" size="sm" style={styles.iconButton} onClick={() => handleEditStatus(commande)}>
+                          <BiEdit />
                         </Button>
                         <Button variant="outline-danger" size="sm" style={styles.iconButton} onClick={() => handleDeleteCommande(commande.id)}>
                           <BiTrash />
@@ -1109,6 +1168,49 @@ const GestionCommandes = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+      {/* Modal pour modifier le statut */}
+      <Modal show={showEditStatusModal} onHide={() => setShowEditStatusModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Modifier le statut de la commande {commandeToEdit?.id}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form.Group>
+      <Form.Label>Nouveau statut</Form.Label>
+      <Form.Select
+        value={newStatus}
+        onChange={(e) => setNewStatus(e.target.value)}
+        disabled={isSubmitting}
+      >
+        <option value="en_attente">En attente</option>
+  <option value="En cour">En cours</option>
+  <option value="Livre">Livrée</option>
+      </Form.Select>
+    </Form.Group>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button 
+      variant="secondary" 
+      onClick={() => setShowEditStatusModal(false)}
+      disabled={isSubmitting}
+    >
+      Annuler
+    </Button>
+    <Button 
+      variant="primary" 
+      onClick={handleUpdateStatus}
+      disabled={isSubmitting}
+    >
+      {isSubmitting ? (
+        <>
+          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          Enregistrement...
+        </>
+      ) : 'Enregistrer'}
+    </Button>
+  </Modal.Footer>
+</Modal>
     </div>
   );
 };

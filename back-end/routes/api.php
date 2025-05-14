@@ -32,8 +32,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/villes', [VilleController::class, 'index']);
 Route::get('/villes/{id}', [VilleController::class, 'show']);
 Route::post('/commandes', [CommandeController::class, 'store']);
-
-Route::apiResource('categories', CategorieController::class);
+Route::put('/commandes/{numeroCommande}/status', [CommandeController::class, 'updateStatus']);
+     Route::apiResource('categories', CategorieController::class);
 
 Route::apiResource('produites', ProduitController::class);
 

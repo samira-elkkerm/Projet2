@@ -3,9 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProduits } from "../../redux/actions/produitsActions";
 import "../../App.css";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const ListProduits = () => {
   const [produites, setProduites] = useState([]);
+      const [hoveredProduct, setHoveredProduct] = useState(null);
+  
 
   useEffect(() => {
     const fetchPanier = async () => {
@@ -31,6 +35,16 @@ const ListProduits = () => {
               <Link to={`/produits/${produit.id}`} className="text-decoration-none text-black">
                 <div className="card-image">
                   <img src={`http://127.0.0.1:8000/images/${produit.image}`} alt={produit.nom} />
+                  {hoveredProduct === produit.id && (
+                                                     <div className="bg-gray">
+                                                       <div className="cart-icon-overlay">
+                                                         <FontAwesomeIcon
+                                                           icon={faShoppingCart}
+                                                           className="cart-icon"
+                                                         />
+                                                       </div>
+                                                     </div>
+                                                   )}
                 </div>
                 <div className="card-items">
                   <h3 className="card-title fs-4">{produit.nom}</h3>

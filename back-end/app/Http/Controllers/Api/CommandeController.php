@@ -66,8 +66,57 @@ class CommandeController extends Controller
     public function edit($id) {}
 
     public function update(Request $request, $id) {}
+public function updateStatus(Request $request, $numeroCommande)
+{
+    $validator = Validator::make($request->all(), [
+ 'status' => 'required|string|in:en_attente,En cour,Livre'
+    ]);
 
-    public function destroy($numeroCommande)
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'errors' => $validator->messages()
+        ], 422);
+    }
+
+    try {
+        DB::beginTransaction();
+
+        // Trouver toutes les commandes avec ce numéro
+        $commandes = Commande::where('numero_commande', $numeroCommande)->get();
+
+        if ($commandes->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Aucune commande trouvée avec ce numéro.'
+            ], 404);
+        }
+
+        // Mettre à jour le statut pour toutes les commandes avec ce numéro
+        $updated = Commande::where('numero_commande', $numeroCommande)
+                          ->update(['statut' => $request->status]);
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Statut de la commande mis à jour avec succès',
+            'data' => [
+                'numero_commande' => $numeroCommande,
+                'new_status' => $request->status,
+                'updated_count' => $updated
+            ]
+        ]);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'status' => 500,
+            'message' => 'Erreur lors de la mise à jour du statut',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}    public function destroy($numeroCommande)
 {
     try {
         // Vérifier d'abord si des commandes existent avec ce numéro

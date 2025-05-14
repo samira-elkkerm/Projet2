@@ -366,7 +366,7 @@ function ValiderCommande({ panierItems }) {
             </form>
           </div>
 
-          <div className="col-md-5">
+          <div className="col-md-4">
             <div className="mb-4">
               <h5 className="fw-medium">Produits</h5>
               <hr className="border-success" />
