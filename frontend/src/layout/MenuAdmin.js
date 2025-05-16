@@ -61,11 +61,11 @@ const SidebarMenu = () => {
         </li>
         <li style={styles.menuItem}>
           <Link
-            to="#stock" // Remplacez par votre route si disponible
-            style={activeItem === 'stock' ? styles.activeMenuLink : styles.menuLink}
-            onClick={() => handleItemClick('stock')}
+            to="/GestionCategories" // Remplacez par votre route si disponible
+            style={activeItem === 'Categories' ? styles.activeMenuLink : styles.menuLink}
+            onClick={() => handleItemClick('Categories')}
           >
-            Gestion De Stock
+            Gestion De Categories
           </Link>
         </li>
         <li style={styles.menuItem}>

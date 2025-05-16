@@ -20,7 +20,7 @@ import GestionUtilisateurs from "./composants/Admin/Utilisateurs/GestionUtilisat
 import GestionProduits from "./composants/Admin/Produits/GestionProduits";
 import GestionPaiement from "./composants/Admin/GestionPaiement";
 import ValiderCommande from "./composants/Client/ValiderCommande";
-
+import GestionCategories from "./composants/Admin/GestionCategories";
 const App = () => (
   <Provider store={store}>
     <>
@@ -43,7 +43,7 @@ const App = () => (
         <Route path="/GestionUtilisateurs" element={<GestionUtilisateurs/>} />    
         <Route path="/GestionProduits" element={<GestionProduits />} />
         <Route path="/GestionPaiement" element={<GestionPaiement />} />
-
+        <Route path="/GestionCategories" element={<GestionCategories />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>

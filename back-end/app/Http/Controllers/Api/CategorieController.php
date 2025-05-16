@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Categorie;
+use Illuminate\Http\Response;
 
 class CategorieController extends Controller
 {
@@ -31,7 +32,13 @@ class CategorieController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $categorie = Categorie::find($id);
+        
+        if (!$categorie) {
+            return response()->json(['message' => 'Catégorie non trouvée'], 404);
+        }
+        
+        return response()->json($categorie);
     }
 
     /**
@@ -39,7 +46,17 @@ class CategorieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $categorie = Categorie::find($id);
+        
+        if (!$categorie) {
+            return response()->json(['message' => 'Catégorie non trouvée'], 404);
+        }
+        
+        $request->validate(['type' => 'required|string|max:255']);
+        
+        $categorie->update(['type' => $request->type]);
+        
+        return response()->json($categorie);
     }
 
     /**
@@ -47,6 +64,14 @@ class CategorieController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $categorie = Categorie::find($id);
+        
+        if (!$categorie) {
+            return response()->json(['message' => 'Catégorie non trouvée'], 404);
+        }
+        
+        $categorie->delete();
+        
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
