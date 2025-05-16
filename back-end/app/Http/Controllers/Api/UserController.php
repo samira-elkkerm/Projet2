@@ -38,33 +38,41 @@ class UserController extends Controller
             'Statut' => 'nullable|string|in:actif,inactif',
             'role' => 'nullable|string|in:client,admin',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages()
             ], 422);
         }
-
-        $user = User::create([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'ville' => $request->ville ?? '',
-            'adress' => $request->adress,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'telephone' => $request->telephone,
-            'Statut' => $request->Statut,
-            'role' => $request->role,
-        ]);
-
+    
+        try {
+            $user = User::create([
+                'nom' => $request->nom,
+                'prenom' => $request->prenom,
+                'ville' => $request->ville ?? '',
+                'adress' => $request->adress,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'telephone' => $request->telephone,
+                'Statut' => $request->Statut ?? 'actif',  // valeur par défaut
+                'role' => $request->role ?? 'admin',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Erreur lors de la création de l\'utilisateur',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    
         return response()->json([
             'status' => 201,
             'message' => 'Utilisateur créé avec succès',
             'user' => $user
         ], 201);
     }
-
+    
     /**
      * Display the specified resource.
      */

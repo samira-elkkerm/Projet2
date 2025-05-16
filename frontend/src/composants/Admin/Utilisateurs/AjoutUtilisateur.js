@@ -22,17 +22,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
     role: 'admin'
   });
 
-  const [errors, setErrors] = useState({
-    nom: '',
-    prenom: '',
-    ville: '',
-    adress: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    telephone: ''
-  });
-
+  const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
   const [apiError, setApiError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,11 +62,11 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
       message: "L'adresse doit contenir au moins 5 caractères"
     },
     password: {
-        required: true,
-        minLength: 8,
-        pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-        message: "Le mot de passe doit contenir : 8 caractères Password123 "
-      },
+      required: true,
+      minLength: 8,
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+      message: "Le mot de passe doit contenir : 8 caractères, majuscule, minuscule et chiffre"
+    },
     confirmPassword: {
       required: true,
       match: 'password',
@@ -91,6 +81,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
       [name]: value
     }));
 
+    // Validation en temps réel si le champ a déjà une erreur
     if (errors[name]) {
       validateField(name, value);
     }
@@ -145,23 +136,31 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
     }
 
     try {
+      // Préparation des données pour l'API (on retire confirmPassword)
+      const { confirmPassword, ...userData } = formData;
+
       const response = await fetch('http://localhost:8000/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(userData)
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Erreur lors de la création de l\'utilisateur');
+        throw new Error(
+          data.message || 
+          (data.errors ? Object.values(data.errors).join(', ') : 'Erreur lors de la création de l\'utilisateur')
+        );
       }
 
       setSuccessMessage("Utilisateur créé avec succès !");
       onUserAdded(data.user);
       
+      // Réinitialisation après succès
       setTimeout(() => {
         setFormData({
           nom: '',
@@ -180,6 +179,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
         setSuccessMessage("");
       }, 2000);
     } catch (err) {
+      console.error("Erreur complète:", err);
       setApiError(err.message);
     } finally {
       setIsSubmitting(false);
@@ -187,13 +187,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
   };
 
   return (
-    <Modal 
-      show={show} 
-      onHide={onHide} 
-      centered
-      size="lg"
-      backdrop="static"
-    >
+    <Modal show={show} onHide={onHide} centered size="lg" backdrop="static">
       <Modal.Header closeButton className="border-0 pb-0">
         <Modal.Title className="w-100 text-center fw-bold fs-4">
           Ajouter un nouvel utilisateur
@@ -201,10 +195,22 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
       </Modal.Header>
       
       <Modal.Body className="px-4 py-3">
-        {apiError && <Alert variant="danger" className="mb-3">{apiError}</Alert>}
-        {successMessage && <Alert variant="success" className="mb-3">{successMessage}</Alert>}
+        {apiError && (
+          <Alert variant="danger" className="mb-3">
+            <i className="bi bi-exclamation-triangle-fill me-2"></i>
+            {apiError}
+          </Alert>
+        )}
+        
+        {successMessage && (
+          <Alert variant="success" className="mb-3">
+            <i className="bi bi-check-circle-fill me-2"></i>
+            {successMessage}
+          </Alert>
+        )}
         
         <Form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
+          {/* Ligne 1: Nom et Prénom */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formNom">
               <Form.Label className="fw-semibold">
@@ -218,7 +224,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('nom', e.target.value)}
                 isInvalid={!!errors.nom}
                 placeholder="Votre Nom"
-                className={errors.nom ? "is-invalid" : "border-success"}
+                className={errors.nom ? "is-invalid" : ""}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.nom}
@@ -237,7 +243,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('prenom', e.target.value)}
                 isInvalid={!!errors.prenom}
                 placeholder="Votre Prénom"
-                className={errors.prenom ? "is-invalid" : "border-success"}
+                className={errors.prenom ? "is-invalid" : ""}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.prenom}
@@ -245,6 +251,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
             </Form.Group>
           </div>
 
+          {/* Ligne 2: Email et Téléphone */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formEmail">
               <Form.Label className="fw-semibold">
@@ -258,7 +265,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('email', e.target.value)}
                 isInvalid={!!errors.email}
                 placeholder="exemple@domaine.com"
-                className={errors.email ? "is-invalid" : "border-success"}
+                className={errors.email ? "is-invalid" : ""}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.email}
@@ -270,7 +277,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 Téléphone <span className="text-danger">*</span>
               </Form.Label>
               <div className="input-group">
-                <span className="input-group-text border-success">+212</span>
+                <span className="input-group-text">+212</span>
                 <Form.Control
                   type="tel"
                   name="telephone"
@@ -279,7 +286,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                   onBlur={(e) => validateField('telephone', e.target.value)}
                   isInvalid={!!errors.telephone}
                   placeholder="0612345678"
-                  className={errors.telephone ? "is-invalid" : "border-success"}
+                  className={errors.telephone ? "is-invalid" : ""}
                 />
               </div>
               <Form.Control.Feedback type="invalid">
@@ -288,6 +295,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
             </Form.Group>
           </div>
 
+          {/* Ligne 3: Mot de passe et confirmation */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formPassword">
               <Form.Label className="fw-semibold">
@@ -301,12 +309,16 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('password', e.target.value)}
                 isInvalid={!!errors.password}
                 placeholder="8+ caractères"
-                className={errors.password ? "is-invalid" : "border-success"}
+                className={errors.password ? "is-invalid" : ""}
               />
+              <Form.Text muted>
+                Doit contenir majuscule, minuscule et chiffre
+              </Form.Text>
               <Form.Control.Feedback type="invalid">
                 {errors.password}
               </Form.Control.Feedback>
             </Form.Group>         
+            
             <Form.Group style={{ width: '45%' }} controlId="formConfirmPassword">
               <Form.Label className="fw-semibold">
                 Confirmer mot de passe <span className="text-danger">*</span>
@@ -319,7 +331,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('confirmPassword', e.target.value)}
                 isInvalid={!!errors.confirmPassword}
                 placeholder="Retapez votre mot de passe"
-                className={errors.confirmPassword ? "is-invalid" : "border-success"}
+                className={errors.confirmPassword ? "is-invalid" : ""}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.confirmPassword}
@@ -327,6 +339,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
             </Form.Group>
           </div>
 
+          {/* Ligne 4: Ville et Adresse */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formVille">
               <Form.Label className="fw-semibold">
@@ -338,7 +351,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onChange={handleChange}
                 onBlur={(e) => validateField('ville', e.target.value)}
                 isInvalid={!!errors.ville}
-                className={errors.ville ? "is-invalid" : "border-success"}
+                className={errors.ville ? "is-invalid" : ""}
               >
                 <option value="">Sélectionnez une ville</option>
                 {villesMaroc.map((ville, index) => (
@@ -362,7 +375,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 onBlur={(e) => validateField('adress', e.target.value)}
                 isInvalid={!!errors.adress}
                 placeholder="123 Rue Principale, Quartier"
-                className={errors.adress ? "is-invalid" : "border-success"}
+                className={errors.adress ? "is-invalid" : ""}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.adress}
@@ -370,6 +383,7 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
             </Form.Group>
           </div>
 
+          {/* Ligne 5: Rôle et Statut */}
           <div className="d-flex justify-content-between w-100 mb-4 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formRole">
               <Form.Label className="fw-semibold">Rôle</Form.Label>
@@ -377,19 +391,18 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
-                className="border-success"
+                disabled
               >
                 <option value="admin">Administrateur</option>
               </Form.Select>
             </Form.Group>
-            
+
             <Form.Group style={{ width: '45%' }} controlId="formStatut">
               <Form.Label className="fw-semibold">Statut</Form.Label>
               <Form.Select
                 name="Statut"
                 value={formData.Statut}
                 onChange={handleChange}
-                className="border-success"
               >
                 <option value="actif">Actif</option>
                 <option value="inactif">Inactif</option>
@@ -397,11 +410,13 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
             </Form.Group>
           </div>
 
+          {/* Boutons */}
           <div className="d-flex justify-content-end gap-3 w-100">
             <Button 
               variant="outline-secondary" 
               onClick={onHide}
               className="px-4 py-2"
+              disabled={isSubmitting}
             >
               Annuler
             </Button>
@@ -409,7 +424,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               variant="success" 
               type="submit"
               className="px-4 py-2"
-              style={{ backgroundColor: '#46a358', borderColor: '#46a358' }}
               disabled={isSubmitting}
             >
               {isSubmitting ? (

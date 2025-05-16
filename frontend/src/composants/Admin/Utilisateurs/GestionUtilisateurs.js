@@ -196,6 +196,7 @@ const GestionUtilisateurs = () => {
                           size="sm" 
                           style={styles.iconButton}
                           onClick={() => handleEditClick(user)}
+                          disabled={user.role === 'client'}
                         >
                           <BiEdit />
                         </Button>
