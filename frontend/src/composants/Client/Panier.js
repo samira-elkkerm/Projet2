@@ -8,7 +8,11 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import ValiderCommande from "./ValiderCommande";
 const Panier = () => {
+  const handleViewDetails = (produitId) => {
+  navigate(`/produit/${produitId}`);
+};
   const [IdUser, setIdUser] = useState();
+  
 
   useEffect(() => {
     const storedId = localStorage.getItem('userId');
@@ -164,90 +168,89 @@ const Panier = () => {
         {/* Tableau des produits */}
         <div className="product-table">
           <table className="table table-borderless custom-table">
-            <thead>
-              <tr>
-                <th className="border-bottom-green">Produit</th>
-                <th className="border-bottom-green">Prix</th>
-                <th className="border-bottom-green">Quantité</th>
-                <th className="border-bottom-green">Total</th>
-                <th className="border-bottom-green"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {userPanierItems.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="text-center py-4">
-                    <div className="alert alert-info">
-                      Votre panier est vide.{" "}
-                      <a href="/boutique">Commencez vos achats</a>
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                userPanierItems.map((item) => {
-                  const produit = getProduitDetails(item.id_produite);
-                  return (
-                    <tr key={item.id}>
-                      <td>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <img
-                            src={`http://127.0.0.1:8000/images/${produit.image}`}
-                            alt={produit.nom}
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              marginRight: "10px",
-                            }}
-                          />
-                          {produit ? produit.nom : "Produit non trouvé"}
-                        </div>
-                      </td>
-                      <td>{produit ? `${produit.prix} DH` : "N/A"}</td>
-                      <td>
-                        <button
-                          className="btn btn-success quantity-btn"
-                          onClick={() =>
-                            handleDecrement(item.id, item.quantité)
-                          }
-                          disabled={item.quantité <= 1}
-                        >
-                          -
-                        </button>
-                        <span className="quantity-value">{item.quantité}</span>
-                        <button
-                          className="btn btn-success quantity-btn"
-                          onClick={() =>
-                            handleIncrement(item.id, item.quantité)
-                          }
-                        >
-                          +
-                        </button>
-                      </td>
-                      <td>{calculateItemTotal(item)} DH</td>
-                      <td>
-                        <button
-                          onClick={() => DeleteProduitPanier(item.id)}
-                          className="btn-delete"
-                          title="Supprimer"
-                          style={{
-                            border: "none",
-                            background: "transparent",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faTrash}
-                            className="delete-icon"
-                            style={{ color: "red" }} // Ajout de la couleur rouge
-                            size="lg"
-                          />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
+          <thead>
+  <tr>
+    <th className="border-bottom-green">Produit</th>
+    <th className="border-bottom-green">Prix</th>
+    <th className="border-bottom-green">Quantité</th>
+    <th className="border-bottom-green">Total</th>
+    <th className="border-bottom-green"></th>
+  </tr>
+</thead>
+<tbody>
+  {userPanierItems.length === 0 ? (
+    <tr>
+      <td colSpan="5" className="text-center py-4">
+        <div className="alert alert-info">
+          Votre panier est vide. <a href="/boutique">Commencez vos achats</a>
+        </div>
+      </td>
+    </tr>
+  ) : (
+    userPanierItems.map((item) => {
+      const produit = getProduitDetails(item.id_produite);
+      return (
+        <tr key={item.id}>
+          <td>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src={`http://127.0.0.1:8000/images/${produit.image}`}
+                alt={produit.nom}
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "10px",
+                }}
+              />
+              {produit ? produit.nom : "Produit non trouvé"}
+            </div>
+          </td>
+          <td>{produit ? `${produit.prix} DH` : "N/A"}</td>
+          <td>
+            <button
+              className="btn btn-success quantity-btn"
+              onClick={() =>
+                handleDecrement(item.id, item.quantité)
+              }
+              disabled={item.quantité <= 1}
+            >
+              -
+            </button>
+            <span className="quantity-value">{item.quantité}</span>
+            <button
+              className="btn btn-success quantity-btn"
+              onClick={() =>
+                handleIncrement(item.id, item.quantité)
+              }
+            >
+              +
+            </button>
+          </td>
+          <td>{calculateItemTotal(item)} DH</td>
+          <td>
+            <button
+              onClick={() => DeleteProduitPanier(item.id)}
+              className="btn-delete"
+              title="Supprimer"
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faTrash}
+                className="delete-icon"
+                style={{ color: "red" }}
+                size="lg"
+              />
+            </button>
+          </td>
+        </tr>
+      );
+    })
+  )}
+</tbody>
           </table>
         </div>
 
@@ -271,17 +274,19 @@ const Panier = () => {
                   </td>
                 </tr>
                 <tr>
+                <td colSpan="5">
                 <div className="card-footer bg-white border-top">
-                <button 
-                  className="btn btn-success w-100 mb-2"
-                  onClick={() => setShowValidation(true)}
-                >
-                  Valider Commande
-                </button>
-                <a href="/boutique" className="btn btn-outline-secondary w-100">
-                  Continuer vos achats
-                </a>
-              </div>
+                  <button 
+                    className="btn btn-success w-100 mb-2"
+                    onClick={() => setShowValidation(true)}
+                  >
+                    Valider Commande
+                  </button>
+                  <a href="/boutique" className="btn btn-outline-secondary w-100">
+                    Continuer vos achats
+                  </a>
+                </div>
+                </td>
                 </tr>
               </tbody>
             </table>
@@ -309,12 +314,15 @@ const Panier = () => {
             />
             {hoveredProduct === produit.id && (
               <div className="bg-gray">
-                <div className="cart-icon-overlay">
+                                 <button 
+                  onClick={() => handleViewDetails(produit.id)} 
+                  className="cart-icon-overlay">
                   <FontAwesomeIcon
                     icon={faShoppingCart}
                     className="cart-icon"
                   />
-                </div>
+                </button>
+
               </div>
             )}
           </div>

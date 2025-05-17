@@ -21,6 +21,7 @@ import GestionProduits from "./composants/Admin/Produits/GestionProduits";
 import GestionPaiement from "./composants/Admin/GestionPaiement";
 import ValiderCommande from "./composants/Client/ValiderCommande";
 import GestionCategories from "./composants/Admin/GestionCategories";
+import DetailProduit from "./composants/Client/DetailProduit";
 const App = () => (
   <Provider store={store}>
     <>
@@ -32,6 +33,7 @@ const App = () => (
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Panier" element={<Panier />} />
         <Route path="/Valider_Commande" element={<ValiderCommande />} />
+        <Route path="/produit/:id" element={<DetailProduit />} />
 
         <Route path="/Connecter" element={<Connecter />} />
         <Route path="/Inscrire" element={<Inscrire />} />

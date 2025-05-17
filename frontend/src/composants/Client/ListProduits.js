@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProduits } from "../../redux/actions/produitsActions";
@@ -32,7 +33,7 @@ const ListProduits = () => {
         {produites && produites.length > 0 ? (
           produites.sort(() => Math.random() - 0.5).map((produit) => (
             <div key={produit.id}>
-              <Link to={`/produits/${produit.id}`} className="text-decoration-none text-black">
+              <Link to={`/produit/${produit.id}`} className="text-decoration-none text-black">
                 <div className="card-image">
                   <img src={`http://127.0.0.1:8000/images/${produit.image}`} alt={produit.nom} />
                   {hoveredProduct === produit.id && (

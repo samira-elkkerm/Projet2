@@ -4,8 +4,13 @@ import Navigation from '../../layout/Navigation';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faLeaf, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from 'lodash';
+import { useNavigate } from 'react-router-dom';
+
+
+
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
 
 const Boutique = () => {
   const [produits, setProduits] = useState([]);
@@ -14,6 +19,11 @@ const Boutique = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+const handleViewDetails = (produitId) => {
+  navigate(`/produit/${produitId}`);
+};
   
   // Gestion des erreurs de chargement
   const fetchProduits = useCallback(async () => {
@@ -125,13 +135,14 @@ const Boutique = () => {
                   {hoveredProduct === produit.id && (
                     <div className="product-overlay">
                       <button 
-                        onClick={() => handleAddToCart(produit)}
-                        className="add-to-cart-btn"
-                        aria-label={`Ajouter ${produit.nom} au panier`}
-                      >
-                        <FontAwesomeIcon icon={faShoppingCart} />
-                        Voir détails
-                      </button>
+  onClick={() => handleViewDetails(produit.id)}
+  className="add-to-cart-btn"
+  aria-label={`Voir détails de ${produit.nom}`}
+>
+  <FontAwesomeIcon icon={faShoppingCart} />
+  Voir détails
+</button>
+
                     </div>
                   )}
                 </div>
@@ -397,3 +408,19 @@ styleElement.textContent = styles;
 document.head.appendChild(styleElement);
 
 export default Boutique;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

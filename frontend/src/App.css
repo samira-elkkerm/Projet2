@@ -1037,3 +1037,265 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+
+
+
+
+
+.product-extra-info {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+.product-extra-info p {
+  margin: 4px 0;
+}
+.info-label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.info-value {
+  font-weight: normal;
+  color: #03df03; /* Pour garder la valeur normale */
+}
+
+.product-detail-container {padding: 50px 20px;
+max-width: 1200px;
+margin: 0 auto;
+font-family: 'Poppins', sans-serif;
+}
+
+.product-detail-content {
+display: flex;
+flex-wrap: wrap;
+gap: 40px;
+align-items: start;
+}
+
+.product-image-section {
+flex: 1;
+text-align: center;
+}
+
+.product-image {
+width: 100%;
+max-width: 400px;
+border-radius: 12px;
+}
+
+.product-info-section {
+flex: 1;
+}
+
+.product-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 60px;
+  margin-bottom: 20px; /* espace sous le titre */
+  padding-bottom: 40px; /* AUGMENTE ici pour créer un plus grand espace entre texte et ligne */
+  border-bottom: 3px solid #008000; /* ligne verte sous le titre */
+  display: inline-block;
+  width: 700px;
+
+}
+
+.product-price {
+font-size: 22px;
+color: #008000;
+font-weight: 500;
+margin-bottom: 20px;
+}
+
+.quantity-selector {
+display: flex;
+align-items: center;
+margin-bottom: 20px;
+}
+
+.quantity-btn {
+background-color: #008000;
+padding: 8px 16px;
+font-size: bold;
+
+border-radius: 10px;
+transition: background-color 0.3s;
+}
+
+.quantity-btn:hover {
+background-color: #1fa504;
+}
+
+.quantity-number {
+margin: 0 15px;
+font-size: 18px;
+}
+
+.action-buttons {
+display: flex;
+gap: 15px;
+margin-bottom: 30px;
+}
+
+
+
+.validate-btn {
+background-color: #008000;
+color: white;
+
+padding: 10px 20px;
+border-radius: 10px;
+font-size: 16px;
+cursor: pointer;
+font-weight: 500;
+border:3px solid #008000;
+}
+
+.validate-btn:hover {
+background-color:  white;
+color: #008000;
+border:3px solid #008000;
+}
+
+.continue-btn {
+  background-color: white;
+  
+  
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+border:3px solid #008000;
+color: #008000;
+}
+
+.continue-btn:hover {
+background-color: #3e3f3e;
+color: white;
+border:3px solid #3e3f3e;
+}
+
+.description-title {
+font-size: 20px;
+color: #008000;
+margin-bottom: 10px;
+
+  margin-top: 10px;
+  margin-bottom: 20px; /* espace sous le titre */
+  padding-bottom: 10px; /* AUGMENTE ici pour créer un plus grand espace entre texte et ligne */
+  border-bottom: 3px solid #008000; /* ligne verte sous le titre */
+  display: inline-block;
+  
+
+}
+
+.product-description {
+font-size: 16px;
+line-height: 1.6;
+color: #555;
+}
+.product-description-section {
+  margin-top: 20px;
+  text-align: left;
+  
+}
+
+
+.size-select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.related-products-section {
+  margin-top: 60px;
+}
+
+
+.related-products {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.related-product-card {
+  width: 180px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.related-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.related-product-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.related-product-name {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 16px;
+}
+.price-size-line {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.price-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+}
+
+.size-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.size-options {
+  display: flex;
+  gap: 8px;
+}
+
+.size-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border: 2px solid transparent;
+}
+
+.size-circle:hover {
+  background-color: #008000;
+  color: white;
+}
+
+.size-circle.selected {
+  background-color: #008000;
+  color: white;
+  border: 2px solid #004d00;
+}

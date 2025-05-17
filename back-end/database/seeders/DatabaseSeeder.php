@@ -79,25 +79,31 @@ class DatabaseSeeder extends Seeder
             'prix' => 120.00,
             'date' => now(),
             'quantité' => 8,
-            'id_categorie' => 3, // Assurez-vous que l'ID de la catégorie existe (par exemple, 3 pour Plantes aquatiques)
+            'id_categorie' => 3, 
         ]);
 
 
 
-        // Créer quelques lignes de commande avec des produits existants
-        LigneCommande::create([
+                
+            LigneCommande::create([
             'quantité' => 2,
             'id_produite' => 1,
+            
+            'id_utilisateur' => 2, 
         ]);
 
         LigneCommande::create([
             'quantité' => 1,
             'id_produite' => 2,
+            
+            'id_utilisateur' => 2,
         ]);
 
         LigneCommande::create([
             'quantité' => 3,
             'id_produite' => 3,
+            
+            'id_utilisateur' => 2,
         ]);
 
 

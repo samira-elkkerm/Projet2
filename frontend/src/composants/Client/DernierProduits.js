@@ -38,7 +38,7 @@ const DernierProduits = () => {
                 <h3 className="card-title fs-3">{produit.nom}</h3>
                 <p>{produit.description}</p>
                 <span className='card-text'>{produit.prix} MAD</span>
-                <Link to={`/produits/${produit.id}`} className="voir-plus">
+                <Link to={`/produit/${produit.id}`} className="voir-plus">
                   <span>Voir plus</span>
                   <FontAwesomeIcon icon={faArrowRightLong} />
                 </Link>
