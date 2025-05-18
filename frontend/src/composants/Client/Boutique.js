@@ -2,15 +2,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Footer from '../../layout/Footer';
 import Navigation from '../../layout/Navigation';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faLeaf, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faLeaf, faSearch, faSpinner, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
+const PRODUCTS_PER_PAGE = 9;
 
 const Boutique = () => {
   const [produits, setProduits] = useState([]);
@@ -19,13 +17,14 @@ const Boutique = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
-const handleViewDetails = (produitId) => {
-  navigate(`/produit/${produitId}`);
-};
-  
-  // Gestion des erreurs de chargement
+  const handleViewDetails = (produitId) => {
+    navigate(`/produit/${produitId}`);
+  };
+
+  // Chargement des produits
   const fetchProduits = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -37,8 +36,8 @@ const handleViewDetails = (produitId) => {
       const data = await response.json();
       setProduits(data);
       setFilteredProduits(data);
+      setCurrentPage(1); // reset page on fetch
     } catch (error) {
-      console.error("Erreur lors du chargement des produits:", error);
       setError("Impossible de charger les produits. Veuillez réessayer plus tard.");
     } finally {
       setIsLoading(false);
@@ -49,18 +48,19 @@ const handleViewDetails = (produitId) => {
     fetchProduits();
   }, [fetchProduits]);
 
-  // Recherche avec debounce pour optimiser les performances
+  // Recherche avec debounce
   const handleSearch = debounce((term) => {
     if (!term) {
       setFilteredProduits(produits);
+      setCurrentPage(1);
       return;
     }
-    
     const filtered = produits.filter(produit =>
       produit.nom.toLowerCase().includes(term.toLowerCase()) ||
       (produit.description && produit.description.toLowerCase().includes(term.toLowerCase()))
     );
     setFilteredProduits(filtered);
+    setCurrentPage(1);
   }, 300);
 
   useEffect(() => {
@@ -68,23 +68,26 @@ const handleViewDetails = (produitId) => {
     return () => handleSearch.cancel();
   }, [searchTerm, produits, handleSearch]);
 
-  // Gestion de l'ajout au panier
-  const handleAddToCart = (produit) => {
-    // Ici vous pourriez intégrer un système de panier (Redux, Context, etc.)
-    console.log("Produit ajouté au panier:", produit);
-    // Ajouter une notification/toast pour l'utilisateur
-  };
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProduits.length / PRODUCTS_PER_PAGE);
+  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
+  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
+  const currentProducts = filteredProduits.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   return (
     <div className="page-container">
       <Navigation />
-      
+
       <header className="shop-header">
         <h1 className="shop-title">
           <FontAwesomeIcon icon={faLeaf} className="title-icon" />
           Notre Collection de Plantes
         </h1>
-        
+
         <div className="search-container">
           <FontAwesomeIcon icon={faSearch} className="search-icon" />
           <input
@@ -116,48 +119,81 @@ const handleViewDetails = (produitId) => {
             <p>Aucun produit ne correspond à votre recherche.</p>
           </div>
         ) : (
-          <div className="products-grid">
-            {filteredProduits.map((produit) => (
-              <article
-                key={produit.id}
-                className={`product-card ${hoveredProduct === produit.id ? 'hovered' : ''}`}
-                onMouseEnter={() => setHoveredProduct(produit.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-                aria-labelledby={`product-${produit.id}-title`}
-              >
-                <div className="product-image-container">
-                  <img
-                    src={`${API_BASE_URL}/images/${produit.image}`}
-                    alt={produit.nom}
-                    className="product-image"
-                    loading="lazy"
-                  />
-                  {hoveredProduct === produit.id && (
-                    <div className="product-overlay">
-                      <button 
-  onClick={() => handleViewDetails(produit.id)}
-  className="add-to-cart-btn"
-  aria-label={`Voir détails de ${produit.nom}`}
->
-  <FontAwesomeIcon icon={faShoppingCart} />
-  Voir détails
-</button>
+          <>
+            <div className="products-grid">
+              {currentProducts.map((produit) => (
+                <article
+                  key={produit.id}
+                  className={`product-card ${hoveredProduct === produit.id ? 'hovered' : ''}`}
+                  onMouseEnter={() => setHoveredProduct(produit.id)}
+                  onMouseLeave={() => setHoveredProduct(null)}
+                  aria-labelledby={`product-${produit.id}-title`}
+                >
+                  <div className="product-image-container">
+                    <img
+                      src={`${API_BASE_URL}/images/${produit.image}`}
+                      alt={produit.nom}
+                      className="product-image"
+                      loading="lazy"
+                    />
+                    {hoveredProduct === produit.id && (
+                      <div className="product-overlay">
+                        <button
+                          onClick={() => handleViewDetails(produit.id)}
+                          className="add-to-cart-btn"
+                          aria-label={`Voir détails de ${produit.nom}`}
+                        >
+                          <FontAwesomeIcon icon={faShoppingCart} />
+                          Voir détails
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="product-details">
+                    <h3 id={`product-${produit.id}-title`} className="product-name">
+                      {produit.nom}
+                    </h3>
+                    {produit.categorie && (
+                      <span className="product-category">{produit.categorie}</span>
+                    )}
+                    <p className="product-price">{produit.prix} DH</p>
+                  </div>
+                </article>
+              ))}
+            </div>
 
-                    </div>
-                  )}
-                </div>
-                <div className="product-details">
-                  <h3 id={`product-${produit.id}-title`} className="product-name">
-                    {produit.nom}
-                  </h3>
-                  {produit.categorie && (
-                    <span className="product-category">{produit.categorie}</span>
-                  )}
-                  <p className="product-price">{produit.prix} DH</p>
-                </div>
-              </article>
-            ))}
-          </div>
+            {/* Pagination */}
+            {filteredProduits.length > PRODUCTS_PER_PAGE && (
+              <nav className="pagination-container" aria-label="Pagination Navigation">
+                <button
+                  onClick={prevPage}
+                  disabled={currentPage === 1}
+                  className="pagination-arrow"
+                  aria-label="Page précédente"
+                >
+                  <FontAwesomeIcon icon={faChevronLeft} />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
+                  <button
+                    key={number}
+                    onClick={() => paginate(number)}
+                    className={`pagination-number ${currentPage === number ? 'active' : ''}`}
+                    aria-current={currentPage === number ? 'page' : undefined}
+                  >
+                    {number}
+                  </button>
+                ))}
+                <button
+                  onClick={nextPage}
+                  disabled={currentPage === totalPages}
+                  className="pagination-arrow"
+                  aria-label="Page suivante"
+                >
+                  <FontAwesomeIcon icon={faChevronRight} />
+                </button>
+              </nav>
+            )}
+          </>
         )}
       </main>
 
@@ -165,6 +201,8 @@ const handleViewDetails = (produitId) => {
     </div>
   );
 };
+
+
 
 // CSS avec CSS Modules ou styled-components serait préférable, mais voici les styles améliorés
 const styles = `
