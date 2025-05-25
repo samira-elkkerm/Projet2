@@ -14,7 +14,7 @@ const BarreCategories = () => {
   }, [dispatch]);
 
   const handleCategoryClick = (id) => {
-    setSelectedCategory(id); // Met à jour la catégorie sélectionnée
+    setSelectedCategory(id);
   };
 
   return (
@@ -25,7 +25,7 @@ const BarreCategories = () => {
           categories.map((categorie) => (
             <li key={categorie.id}>
               <Link
-                to={`/boutique?categorie=${categorie.id}`}
+                to={`/boutique/${categorie.id}`}  // Changé pour utiliser le paramètre d'URL
                 style={{ textDecoration: 'none' }}
                 className={selectedCategory === categorie.id ? "selected" : ""}
                 onClick={() => handleCategoryClick(categorie.id)}

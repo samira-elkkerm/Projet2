@@ -202,7 +202,7 @@ const TableauBord = () => {
                       precision={2}
                       prefix={<DollarOutlined />}
                       valueStyle={{ color: '#52c41a' }}
-                      suffix="€"
+                      suffix="Dh"
                     />
                   </Card>
                 </Col>
@@ -214,7 +214,7 @@ const TableauBord = () => {
                       precision={2}
                       prefix={<ShoppingOutlined />}
                       valueStyle={{ color: '#faad14' }}
-                      suffix="€"
+                      suffix="Dh"
                     />
                   </Card>
                 </Col>
@@ -251,7 +251,7 @@ const TableauBord = () => {
                         <Tooltip 
                           formatter={(value, name) => 
                             name === 'revenue' 
-                              ? [`${value} €`, 'Revenu'] 
+                              ? [`${value} Dh`, 'Revenu'] 
                               : [value, 'Commandes']
                           }
                         />
@@ -280,12 +280,12 @@ const TableauBord = () => {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
                         <YAxis />
-                        <Tooltip formatter={(value) => [`${value} €`, 'Revenu']} />
+                        <Tooltip formatter={(value) => [`${value} Dh`, 'Revenu']} />
                         <Legend />
                         <Bar 
                           dataKey="revenue" 
                           fill="#82ca9d" 
-                          name="Revenu (€)"
+                          name="Revenu (Dh)"
                         />
                       </BarChart>
                     </ResponsiveContainer>
@@ -423,7 +423,7 @@ const TableauBord = () => {
                           title: 'Montant',
                           dataIndex: 'total',
                           key: 'total',
-                          render: (value) => <Text type="success">{`${value} €`}</Text>,
+                          render: (value) => <Text type="success">{`${value} Dh`}</Text>,
                           sorter: (a, b) => a.total - b.total,
                           defaultSortOrder: 'descend',
                         },
@@ -478,7 +478,7 @@ const TableauBord = () => {
                           title: 'Prix',
                           dataIndex: 'prix',
                           key: 'prix',
-                          render: (value) => <Text type="secondary">{`${value} €`}</Text>,
+                          render: (value) => <Text type="secondary">{`${value} Dh`}</Text>,
                         },
                       ]}
                     />

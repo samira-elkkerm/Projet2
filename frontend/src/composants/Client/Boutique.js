@@ -4,7 +4,7 @@ import Navigation from '../../layout/Navigation';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faLeaf, faSearch, faSpinner, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from 'lodash';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
@@ -19,6 +19,7 @@ const Boutique = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const { id_categorie } = useParams();
 
   const handleViewDetails = (produitId) => {
     navigate(`/produit/${produitId}`);
@@ -35,14 +36,24 @@ const Boutique = () => {
       }
       const data = await response.json();
       setProduits(data);
-      setFilteredProduits(data);
-      setCurrentPage(1); // reset page on fetch
+      
+      // Filtrer par catégorie si id_categorie est présent dans l'URL
+      if (id_categorie) {
+        const filtered = data.filter(produit => 
+          produit.id_categorie == id_categorie
+        );
+        setFilteredProduits(filtered);
+      } else {
+        setFilteredProduits(data);
+      }
+      
+      setCurrentPage(1);
     } catch (error) {
       setError("Impossible de charger les produits. Veuillez réessayer plus tard.");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [id_categorie]);
 
   useEffect(() => {
     fetchProduits();
@@ -51,14 +62,31 @@ const Boutique = () => {
   // Recherche avec debounce
   const handleSearch = debounce((term) => {
     if (!term) {
-      setFilteredProduits(produits);
+      // Si pas de terme de recherche, on affiche soit tous les produits soit ceux filtrés par catégorie
+      if (id_categorie) {
+        const filtered = produits.filter(produit => 
+          produit.id_categorie == id_categorie
+        );
+        setFilteredProduits(filtered);
+      } else {
+        setFilteredProduits(produits);
+      }
       setCurrentPage(1);
       return;
     }
-    const filtered = produits.filter(produit =>
-      produit.nom.toLowerCase().includes(term.toLowerCase()) ||
-      (produit.description && produit.description.toLowerCase().includes(term.toLowerCase()))
-    );
+    
+    // Filtre combiné recherche + catégorie si présente
+    const filtered = produits.filter(produit => {
+      const matchesSearch = 
+        produit.nom.toLowerCase().includes(term.toLowerCase()) ||
+        (produit.description && produit.description.toLowerCase().includes(term.toLowerCase()));
+      
+      if (id_categorie) {
+        return matchesSearch && produit.id_categorie == id_categorie;
+      }
+      return matchesSearch;
+    });
+    
     setFilteredProduits(filtered);
     setCurrentPage(1);
   }, 300);
