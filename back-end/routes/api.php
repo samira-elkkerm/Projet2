@@ -13,6 +13,7 @@ use App\Http\Controllers\API\AuthController;
 use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\Api\VilleController;
 use App\Http\Controllers\API\ContactController;
+use App\Http\Controllers\API\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,3 +94,6 @@ Route::middleware('auth:api')->group(function () {
 
 
 Route::post('/send-email', [ContactController::class, 'sendEmail']);
+Route::get('/dashboard/stats', [DashboardController::class, 'getCommandeStatistics']);
+Route::get('/dashboard/trends/{period}', [DashboardController::class, 'getCommandeTrends']);
+Route::get('/dashboard/statistics', [DashboardController::class, 'getProductStatistics']);
