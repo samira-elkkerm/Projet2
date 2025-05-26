@@ -155,10 +155,9 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
     }
 
     try {
-      // Préparation des données pour l'API (on retire confirmPassword)
+
       const { confirmPassword, ...userData } = formData;
-      
-      // Si le mot de passe est vide, on ne l'envoie pas
+
       if (!userData.password) {
         delete userData.password;
       }
@@ -183,8 +182,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
 
       setSuccessMessage("Utilisateur modifié avec succès !");
       onUserUpdated(data.user);
-      
-      // Réinitialisation après succès
       setTimeout(() => {
         setFormData({
           nom: '',
@@ -234,7 +231,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
         )}
         
         <Form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
-          {/* Ligne 1: Nom et Prénom */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formNom">
               <Form.Label className="fw-semibold">
@@ -274,8 +270,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 2: Email et Téléphone */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formEmail">
               <Form.Label className="fw-semibold">
@@ -318,8 +312,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 3: Mot de passe et confirmation */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formPassword">
               <Form.Label className="fw-semibold">
@@ -362,8 +354,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 4: Ville et Adresse */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formVille">
               <Form.Label className="fw-semibold">
@@ -406,8 +396,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 5: Rôle et Statut */}
           <div className="d-flex justify-content-between w-100 mb-4 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formRole">
               <Form.Label className="fw-semibold">Rôle</Form.Label>
@@ -435,8 +423,6 @@ const ModifierUtilisateur = ({ show, onHide, user, onUserUpdated }) => {
               </Form.Select>
             </Form.Group>
           </div>
-
-          {/* Boutons */}
           <div className="d-flex justify-content-end gap-3 w-100">
             <Button 
               variant="outline-secondary" 

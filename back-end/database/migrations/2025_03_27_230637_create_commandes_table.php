@@ -29,7 +29,7 @@ return new class extends Migration
             $table->float('frais_livraison');
             $table->float('total');
             $table->string('methode_paiement')->default('à la livraison');
-            $table->enum('statut', ['en_attente', 'En cour', 'Livre'])->default('en_attente');
+            $table->enum('statut', ['en_attente', 'En cour', 'Livre','Annulle'])->default('en_attente');
             $table->timestamps();
         });
     }

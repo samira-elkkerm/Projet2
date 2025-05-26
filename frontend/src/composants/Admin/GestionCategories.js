@@ -16,7 +16,6 @@ const GestionCategories = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
-  // Form data states
   const [formData, setFormData] = useState({
     type: '',
     
@@ -28,7 +27,6 @@ const GestionCategories = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // Fetch categories from API
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -60,12 +58,10 @@ const GestionCategories = () => {
     fetchCategories();
   }, []);
 
-  // Handle search
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  // Filter categories based on search term
   const filteredCategories = categories.filter(category => {
     if (!searchTerm) return true;
     return (
@@ -74,7 +70,6 @@ const GestionCategories = () => {
     );
   });
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -82,7 +77,6 @@ const GestionCategories = () => {
       [name]: value
     }));
 
-    // Clear error when typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -91,7 +85,6 @@ const GestionCategories = () => {
     }
   };
 
-  // Handle edit form input changes
   const handleEditInputChange = (e) => {
     const { name, value } = e.target;
     setEditFormData(prev => ({
@@ -99,7 +92,6 @@ const GestionCategories = () => {
       [name]: value
     }));
 
-    // Clear error when typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -108,7 +100,6 @@ const GestionCategories = () => {
     }
   };
 
-  // Validate form
   const validateForm = () => {
     const newErrors = {};
     let isValid = true;
@@ -122,7 +113,6 @@ const GestionCategories = () => {
     return isValid;
   };
 
-  // Validate edit form
   const validateEditForm = () => {
     const newErrors = {};
     let isValid = true;
@@ -136,7 +126,6 @@ const GestionCategories = () => {
     return isValid;
   };
 
-  // Handle add category
   const handleAddCategory = async (e) => {
     e.preventDefault();
     
@@ -158,7 +147,6 @@ const GestionCategories = () => {
         throw new Error(data.message || 'Erreur lors de la création');
       }
 
-      // Add new category to state
       setCategories(prev => [...prev, data]);
       setSuccessMessage('Catégorie ajoutée avec succès');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -169,7 +157,6 @@ const GestionCategories = () => {
     }
   };
 
-  // Handle edit click
   const handleEditClick = (category) => {
     setEditFormData({
       id: category.id,
@@ -179,7 +166,6 @@ const GestionCategories = () => {
     setShowEditModal(true);
   };
 
-  // Handle update category
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     
@@ -204,7 +190,6 @@ const GestionCategories = () => {
         throw new Error(data.message || 'Erreur lors de la mise à jour');
       }
 
-      // Update category in state
       setCategories(prev => prev.map(cat => 
         cat.id === editFormData.id ? data : cat
       ));
@@ -216,13 +201,11 @@ const GestionCategories = () => {
     }
   };
 
-  // Handle delete click
   const handleDeleteClick = (category) => {
     setCategoryToDelete(category);
     setShowDeleteConfirm(true);
   };
 
-  // Confirm delete
   const confirmDelete = async () => {
     if (!categoryToDelete) return;
 
@@ -237,8 +220,6 @@ const GestionCategories = () => {
       if (!response.ok) {
         throw new Error('Erreur lors de la suppression');
       }
-
-      // Remove category from state
       setCategories(prev => prev.filter(cat => cat.id !== categoryToDelete.id));
       setSuccessMessage('Catégorie supprimée avec succès');
       setTimeout(() => setSuccessMessage(''), 3000);
@@ -291,7 +272,7 @@ const GestionCategories = () => {
               <BiSearch style={styles.searchIcon} />
               <Form.Control
                 type="text"
-                placeholder="Rechercher par type "
+                placeholder="Rechercher par type"
                 value={searchTerm}
                 onChange={handleSearch}
                 style={styles.searchInput}
@@ -306,18 +287,18 @@ const GestionCategories = () => {
             <Table borderless responsive style={styles.table}>
               <thead>
                 <tr style={styles.tableHeader}>
-                  <th style={styles.thCell}>ID</th>
-                  <th style={styles.thCell}>Type</th>
-                  <th style={styles.thCell}>Actions</th>
+                  <th style={{ ...styles.thCell, textAlign: 'left' }}>ID</th>
+                  <th style={{ ...styles.thCell, textAlign: 'left' }}>Type</th>
+                  <th style={{ ...styles.thCell, textAlign: 'center' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredCategories.length > 0 ? (
                   filteredCategories.map((category) => (
                     <tr key={category.id} style={styles.tableRow}>
-                      <td style={styles.tdCell}>{category.id}</td>
-                      <td style={styles.tdCell}>{category.type}</td>
-                      <td style={{ ...styles.tdCell, ...styles.actionsCell }}>
+                      <td style={{ ...styles.tdCell, textAlign: 'left' }}>{category.id}</td>
+                      <td style={{ ...styles.tdCell, textAlign: 'left' }}>{category.type}</td>
+                      <td style={{ ...styles.tdCell, ...styles.actionsCell, textAlign: 'center' }}>
                         <Button 
                           variant="outline-primary" 
                           size="sm" 
@@ -339,7 +320,7 @@ const GestionCategories = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
+                    <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
                       Aucune catégorie trouvée
                     </td>
                   </tr>
@@ -349,8 +330,6 @@ const GestionCategories = () => {
           </div>
         </div>
       </div>
-
-      {/* Modal pour ajouter une catégorie */}
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Ajouter une catégorie</Modal.Title>
@@ -383,8 +362,6 @@ const GestionCategories = () => {
           </Form>
         </Modal.Body>
       </Modal>
-
-      {/* Modal pour modifier une catégorie */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Modifier la catégorie</Modal.Title>
@@ -416,8 +393,6 @@ const GestionCategories = () => {
           </Form>
         </Modal.Body>
       </Modal>
-
-      {/* Modal de confirmation de suppression */}
       <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirmer la suppression</Modal.Title>

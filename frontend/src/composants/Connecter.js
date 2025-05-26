@@ -16,25 +16,36 @@ const Connecter = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const role = localStorage.getItem("userRole");
+    if (token && role) {
+      if (role === "admin") {
+        navigate("/Admin/TableauBord");
+      } else if (role === "client") {
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
-    setErrors({ ...errors, [name]: "" });
+    }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email) newErrors.email = "L'email est requis.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "L'email n'est pas valide.";
     }
     if (!formData.password) newErrors.password = "Le mot de passe est requis.";
-    if (formData.password.length < 6) {
-      newErrors.password =
-        "Le mot de passe doit contenir au moins 6 caractères.";
+    else if (formData.password.length < 6) {
+      newErrors.password = "Le mot de passe doit contenir au moins 6 caractères.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -68,36 +79,31 @@ const Connecter = () => {
       }
 
       const data = await response.json();
-      console.log(data);
 
       if (data.token && data.user) {
         localStorage.setItem("authToken", data.token);
         localStorage.setItem("userId", data.user.id);
+        localStorage.setItem("userRole", data.user.role);
+
         if (data.user.role === "admin") {
           navigate("/Admin/TableauBord");
         } else if (data.user.role === "client") {
           navigate("/");
+        } else {
+          setErrors({ message: "Rôle utilisateur non reconnu." });
         }
       } else {
-        setErrors({ message: "unauthorized" });
+        setErrors({ message: "Données utilisateur invalides." });
       }
     } catch (error) {
-      console.error("Erreur de connexion:", error.message);
       setErrors({ message: error.message || "Une erreur de connexion." });
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    const storedToken = sessionStorage.getItem("authToken");
-    if (!storedToken) {
-      navigate("/Connecter");
-    }
-  }, [navigate]);
-
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -160,6 +166,7 @@ const Connecter = () => {
                   type="button"
                   className="password-toggle"
                   onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Masquer mot de passe" : "Afficher mot de passe"}
                 >
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </button>
@@ -177,8 +184,9 @@ const Connecter = () => {
           >
             {isLoading ? "Connexion en cours..." : "Se connecter"}
           </button>
+
           <div className="text-center mt-3">
-              <Link to="/forgot-password">Mot de passe oublié ?</Link>
+            <Link to="/forgot-password">Mot de passe oublié ?</Link>
           </div>
         </form>
       </div>

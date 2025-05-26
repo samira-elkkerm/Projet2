@@ -81,7 +81,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
       [name]: value
     }));
 
-    // Validation en temps réel si le champ a déjà une erreur
     if (errors[name]) {
       validateField(name, value);
     }
@@ -136,7 +135,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
     }
 
     try {
-      // Préparation des données pour l'API (on retire confirmPassword)
       const { confirmPassword, ...userData } = formData;
 
       const response = await fetch('http://localhost:8000/api/users', {
@@ -160,7 +158,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
       setSuccessMessage("Utilisateur créé avec succès !");
       onUserAdded(data.user);
       
-      // Réinitialisation après succès
       setTimeout(() => {
         setFormData({
           nom: '',
@@ -210,7 +207,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
         )}
         
         <Form onSubmit={handleSubmit} className="d-flex flex-column align-items-center">
-          {/* Ligne 1: Nom et Prénom */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formNom">
               <Form.Label className="fw-semibold">
@@ -250,8 +246,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 2: Email et Téléphone */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formEmail">
               <Form.Label className="fw-semibold">
@@ -294,8 +288,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 3: Mot de passe et confirmation */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formPassword">
               <Form.Label className="fw-semibold">
@@ -338,8 +330,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 4: Ville et Adresse */}
           <div className="d-flex justify-content-between w-100 mb-3 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formVille">
               <Form.Label className="fw-semibold">
@@ -382,8 +372,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               </Form.Control.Feedback>
             </Form.Group>
           </div>
-
-          {/* Ligne 5: Rôle et Statut */}
           <div className="d-flex justify-content-between w-100 mb-4 gap-3">
             <Form.Group style={{ width: '45%' }} controlId="formRole">
               <Form.Label className="fw-semibold">Rôle</Form.Label>
@@ -409,8 +397,6 @@ const AjoutUtilisateur = ({ show, onHide, onUserAdded }) => {
               </Form.Select>
             </Form.Group>
           </div>
-
-          {/* Boutons */}
           <div className="d-flex justify-content-end gap-3 w-100">
             <Button 
               variant="outline-secondary" 
