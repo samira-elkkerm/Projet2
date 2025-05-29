@@ -38,7 +38,7 @@ const App = () => (
       <Route path="/Panier" element={<Panier />} />
       <Route path="/Valider_Commande" element={<ValiderCommande />} />
       <Route path="/produit/:id" element={<DetailProduit />} />
-
+               <Route path="/Boutique/:id_categorie" element={<Boutique />} />
       <Route path="/Connecter" element={<Connecter />} />
       <Route path="/Inscrire" element={<Inscrire />} />
       <Route path="/Forgot-Password" element={<ForgotPassword />} />
