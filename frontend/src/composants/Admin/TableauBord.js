@@ -12,7 +12,7 @@ import {
 import {
   ShoppingCartOutlined, DollarOutlined, ShoppingOutlined, 
   PieChartOutlined, BarChartOutlined, LineChartOutlined,
-  EnvironmentOutlined, CreditCardOutlined, WarningOutlined
+  EnvironmentOutlined, CreditCardOutlined, WarningOutlined  
 } from '@ant-design/icons';
 import moment from 'moment';
 

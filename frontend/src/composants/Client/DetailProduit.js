@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import '../../App.css';
 
 import NavigationBar from '../../layout/Navigation';
@@ -15,6 +17,7 @@ const DetailProduit = () => {
   const [displayedPrice, setDisplayedPrice] = useState(0);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [hoveredProduct, setHoveredProduct] = useState(null); // Ajouté
 
   useEffect(() => {
     // Chargement du produit courant
@@ -43,6 +46,10 @@ const DetailProduit = () => {
   const handleIncrease = () => setQuantity(prev => prev + 1);
   const handleDecrease = () => {
     if (quantity > 1) setQuantity(prev => prev - 1);
+  };
+
+  const handleViewDetails = (productId) => { // Ajouté
+    navigate(`/produit/${productId}`);
   };
 
   const handleAddToCart = async () => {
@@ -152,17 +159,39 @@ const DetailProduit = () => {
           </div>
         </div>
 
-        <div className="related-products-section">
-          <div className="related-products">
+        <div className="produits-container my-4 container">
+          <div className="produits-grid">
             {relatedProducts.map(item => (
-              <div key={item.id} className="related-product-card">
-                <img 
-                  src={`http://127.0.0.1:8000/images/${item.image}`} 
-                  alt={item.nom}
-                  className="related-product-image"
-                />
-                <p className="related-product-name">{item.nom}</p>
-                <p className="info-value">{item.prix} <span>MAD</span></p>
+              <div
+                key={item.id}
+                className="produit-card"
+                onMouseEnter={() => setHoveredProduct(item.id)}
+                onMouseLeave={() => setHoveredProduct(null)}
+              >
+                <div className="produit-image-container">
+                  <img 
+                    src={`http://127.0.0.1:8000/images/${item.image}`} 
+                    alt={item.nom}
+                    className="produit-image"
+                  />
+                  {hoveredProduct === item.id && (
+                    <div className="bg-gray">
+                      <button 
+                        onClick={() => handleViewDetails(item.id)} 
+                        className="cart-icon-overlay"
+                      >
+                        <FontAwesomeIcon
+                          icon={faShoppingCart}
+                          className="cart-icon"
+                        />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="produit-details">
+                  <h3 className="produit-nom">{item.nom}</h3>
+                  <p className="produit-prix">{item.prix} DH</p>
+                </div>
               </div>
             ))}
           </div>
