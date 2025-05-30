@@ -26,12 +26,11 @@ class DatabaseSeeder extends Seeder
             'prenom' => 'John',
             'adress' => '123 Main St',
             'email' => 'mytoudert@gmail.com',
-            'password' => Hash::make('password123'), // Assurez-vous de hasher le mot de passe
+            'password' => Hash::make('password123'), 
             'telephone' => '1234567890',
-            'role' => 'admin', // ou 'client' selon le cas
+            'role' => 'admin', 
         ]);
 
-        // Exemple d'un autre utilisateur
         User::create([
             'nom' => 'Smith',
             'prenom' => 'Jane',
@@ -42,146 +41,239 @@ class DatabaseSeeder extends Seeder
             'role' => 'client',
         ]);
 
-        // Création de quelques categories  (plantes)
-        Categorie::create(['type' => 'Plantes d\'intérieur']);
-        Categorie::create(['type' => 'Plantes d\'extérieur']);
-        Categorie::create(['type' => 'Plantes aquatiques']);
+Categorie::create(['type' => 'Plantes d\'intérieur']);
+Categorie::create(['type' => 'Plantes d\'extérieur']);
+Categorie::create(['type' => 'Plantes aromatiques']);
+Categorie::create(['type' => 'Plantes succulentes']);
+Categorie::create(['type' => 'Cactus']);
+Categorie::create(['type' => 'Arbres fruitiers']);
+Categorie::create(['type' => 'Arbustes d\'ornement']);
+Categorie::create(['type' => 'Fleurs annuelles']);
+Categorie::create(['type' => 'Fleurs vivaces']);
+Categorie::create(['type' => 'Plantes grimpantes']);
+Categorie::create(['type' => 'Plantes aquatiques']);
+Categorie::create(['type' => 'Outils de jardinage']);
+Categorie::create(['type' => 'Arrosage et irrigation']);
+Categorie::create(['type' => 'Engrais et soins des plantes']);
+Categorie::create(['type' => 'Pots et jardinières']);
+Categorie::create(['type' => 'Terreaux et substrats']);
+Categorie::create(['type' => 'Décoration de jardin']);
+Categorie::create(['type' => 'Protection des plantes']);
+Categorie::create(['type' => 'Serres et abris']);
+Categorie::create(['type' => 'Éclairage pour plantes']);
 
-
-
-
-
-        // Création de quelques produits (plantes)
+       
+        // 1. Plantes d'intérieur
         Produite::create([
-            'nom' => 'Ficus',
-            'image' => 'slider.png',
-            'description' => 'Le Ficus est une plante d\'intérieur facile à entretenir.',
-            'prix' => 150.00,
+            'nom' => 'Ficus Lyrata',
+            'image' => 'ficus-lyrata.jpg',
+            'description' => 'Le Ficus Lyrata, ou "Fiddle Leaf Fig", est une plante d\'intérieur très prisée pour ses grandes feuilles vert foncé en forme de violon. Elle purifie l\'air et nécessite une lumière indirecte. Parfaite pour les salons et bureaux.',
+            'prix' => 89.99,
             'date' => now(),
-            'quantité' => 10,
-            'id_categorie' => 1, // Assurez-vous que l'ID de la catégorie existe (par exemple, 1 pour Plantes d\'intérieur)
+            'quantité' => 15,
+            'id_categorie' => 1,
         ]);
 
+        Produite::create([
+            'nom' => 'Monstera Deliciosa',
+            'image' => 'monstera.jpg',
+            'description' => 'La Monstera, avec ses feuilles perforées caractéristiques, est une plante tropicale facile à entretenir. Elle apporte une touche exotique à votre intérieur et supporte bien la mi-ombre.',
+            'prix' => 45.50,
+            'date' => now(),
+            'quantité' => 20,
+            'id_categorie' => 1,
+        ]);
+
+        // 2. Plantes d'extérieur
         Produite::create([
             'nom' => 'Lavande',
-            'image' => 'slider.png',
-            'description' => 'La lavande est une plante d\'extérieur parfumée idéale pour le jardin.',
-            'prix' => 80.00,
+            'image' => 'lavande.jpg',
+            'description' => 'La lavande, avec son parfum apaisant et ses fleurs violettes, est idéale pour les jardins secs. Elle attire les pollinisateurs et résiste à la sécheresse.',
+            'prix' => 12.50,
             'date' => now(),
-            'quantité' => 5,
-            'id_categorie' => 2, // Assurez-vous que l'ID de la catégorie existe (par exemple, 2 pour Plantes d\'extérieur)
+            'quantité' => 30,
+            'id_categorie' => 2,
         ]);
 
         Produite::create([
-            'nom' => 'Nymphaea',
-            'image' => 'slider.png',
-            'description' => 'Le Nymphaea, ou nénuphar, est une plante aquatique pour bassin.',
-            'prix' => 120.00,
+            'nom' => 'Hortensia',
+            'image' => 'hortensia.jpg',
+            'description' => 'L\'hortensia offre de magnifiques boules de fleurs bleues, roses ou blanches. Il préfère les sols acides et une exposition mi-ombre. Parfait pour les bordures.',
+            'prix' => 22.90,
+            'date' => now(),
+            'quantité' => 18,
+            'id_categorie' => 2,
+        ]);
+
+        // 3. Plantes aromatiques
+        Produite::create([
+            'nom' => 'Basilic',
+            'image' => 'basilic.jpg',
+            'description' => 'Le basilic est une herbe aromatique incontournable en cuisine méditerranéenne. Facile à cultiver en pot, il nécessite du soleil et un arrosage régulier.',
+            'prix' => 5.99,
+            'date' => now(),
+            'quantité' => 50,
+            'id_categorie' => 3,
+        ]);
+
+        Produite::create([
+            'nom' => 'Menthe Poivrée',
+            'image' => 'menthe.jpg',
+            'description' => 'La menthe poivrée, avec son parfum frais, est parfaite pour les thés et cocktails. Vigoureuse, elle se cultive en pot pour éviter qu\'elle n\'envahisse le jardin.',
+            'prix' => 4.50,
+            'date' => now(),
+            'quantité' => 40,
+            'id_categorie' => 3,
+        ]);
+
+        // 4. Plantes succulentes
+        Produite::create([
+            'nom' => 'Echeveria',
+            'image' => 'echeveria.jpg',
+            'description' => 'L\'Echeveria est une succulente aux rosettes colorées, très résistante. Elle nécessite peu d\'eau et beaucoup de lumière, idéale pour les terrariums.',
+            'prix' => 8.50,
+            'date' => now(),
+            'quantité' => 25,
+            'id_categorie' => 4,
+        ]);
+
+        Produite::create([
+            'nom' => 'Haworthia',
+            'image' => 'haworthia.jpg',
+            'description' => 'L\'Haworthia, avec ses feuilles striées, est une petite succulente parfaite pour les bureaux. Elle tolère bien la faible luminosité et les oublis d\'arrosage.',
+            'prix' => 7.20,
+            'date' => now(),
+            'quantité' => 35,
+            'id_categorie' => 4,
+        ]);
+
+        // 5. Cactus
+        Produite::create([
+            'nom' => 'Cactus Cierge',
+            'image' => 'cactus-cierge.jpg',
+            'description' => 'Ce cactus vertical (Cereus) est résistant et décoratif. Il nécessite très peu d\'eau et beaucoup de soleil, parfait pour les débutants.',
+            'prix' => 14.99,
+            'date' => now(),
+            'quantité' => 20,
+            'id_categorie' => 5,
+        ]);
+
+        Produite::create([
+            'nom' => 'Opuntia',
+            'image' => 'opuntia.jpg',
+            'description' => 'L\'Opuntia, ou "Figuier de Barbarie", produit des raquettes plates et des fruits comestibles. Résistant au froid et très graphique.',
+            'prix' => 18.50,
+            'date' => now(),
+            'quantité' => 12,
+            'id_categorie' => 5,
+        ]);
+
+        // 6. Arbres fruitiers
+        Produite::create([
+            'nom' => 'Citronnier 4 Saisons',
+            'image' => 'citronnier.jpg',
+            'description' => 'Ce citronnier produit des fruits presque toute l\'année. Adapté aux climats doux ou à la culture en pot. Fleurs blanches parfumées.',
+            'prix' => 49.99,
+            'date' => now(),
+            'quantité' => 10,
+            'id_categorie' => 6,
+        ]);
+
+        Produite::create([
+            'nom' => 'Olivier',
+            'image' => 'olivier.jpg',
+            'description' => 'L\'olivier est un arbre méditerranéen symbole de paix. Résistant à la sécheresse, il peut vivre des siècles. Donne des olives après quelques années.',
+            'prix' => 79.90,
             'date' => now(),
             'quantité' => 8,
-            'id_categorie' => 3, 
+            'id_categorie' => 6,
         ]);
 
+        // 7. Outils de jardinage
+        Produite::create([
+            'nom' => 'Sécateur Professionnel',
+            'image' => 'secateur.jpg',
+            'description' => 'Sécateur à lames en acier trempé pour des coupes nettes. Poignée ergonomique et système de verrouillage sécurisé. Garantie 5 ans.',
+            'prix' => 24.99,
+            'date' => now(),
+            'quantité' => 40,
+            'id_categorie' => 12,
+        ]);
 
+        Produite::create([
+            'nom' => 'Pelle Ergonomique',
+            'image' => 'pelle.jpg',
+            'description' => 'Pelle en acier inoxydable avec manche en bois traité. Idéale pour creuser et transplanter sans se fatiguer le dos. Longueur : 110 cm.',
+            'prix' => 32.50,
+            'date' => now(),
+            'quantité' => 25,
+            'id_categorie' => 12,
+        ]);
 
-                
-            LigneCommande::create([
-            'quantité' => 2,
-            'id_produite' => 1,
+        // 8. Pots et jardinières
+        Produite::create([
+            'nom' => 'Jardinière en Bois',
+            'image' => 'jardiniere-bois.jpg',
+            'description' => 'Jardinière en bois traité (80x30x30 cm) pour balcon ou terrasse. Design moderne et résistant aux intempéries. Facile à assembler.',
+            'prix' => 59.99,
+            'date' => now(),
+            'quantité' => 12,
+            'id_categorie' => 14,
+        ]);
+
+        Produite::create([
+            'nom' => 'Pot en Céramique Émaillée',
+            'image' => 'pot-ceramique.jpg',
+            'description' => 'Pot décoratif de 30 cm de diamètre, avec soucoupe. Drainage optimal pour les plantes d\'intérieur. Disponible en plusieurs coloris.',
+            'prix' => 34.90,
+            'date' => now(),
+            'quantité' => 20,
+            'id_categorie' => 14,
+        ]);
+
+        // 9. Engrais et soins
+        Produite::create([
+            'nom' => 'Engrais Universel Bio',
+            'image' => 'engrais-bio.jpg',
+            'description' => 'Engrais organique pour toutes les plantes. Favorise une croissance saine et renforce les défenses naturelles. Respecte l\'environnement.',
+            'prix' => 9.99,
+            'date' => now(),
+            'quantité' => 35,
+            'id_categorie' => 13,
+        ]);
+
+        Produite::create([
+            'nom' => 'Anti-Pucerons Naturel',
+            'image' => 'anti-pucerons.jpg',
+            'description' => 'Solution à base de pyrèthre pour éliminer les pucerons sans produits chimiques. Compatible avec l\'agriculture biologique.',
+            'prix' => 12.80,
+            'date' => now(),
+            'quantité' => 30,
+            'id_categorie' => 13,
+        ]);
+
+        // 10. Décoration de jardin
+        Produite::create([
+            'nom' => 'Fontaine Solaire',
+            'image' => 'fontaine-solaire.jpg',
+            'description' => 'Fontaine décorative fonctionnant à l\'énergie solaire. Jet d\'eau apaisant, résistante aux UV. Dimensions : 45 cm de hauteur.',
+            'prix' => 79.99,
+            'date' => now(),
+            'quantité' => 8,
+            'id_categorie' => 16,
+        ]);
+
+        Produite::create([
+            'nom' => 'Statue de Jardin en Pierre',
+            'image' => 'statue-jardin.jpg',
+            'description' => 'Statue en pierre reconstituée (hauteur 60 cm) représentant un ange. Résistante au gel et aux intempéries. Poids : 15 kg.',
+            'prix' => 129.90,
+            'date' => now(),
+            'quantité' => 5,
+            'id_categorie' => 16,
+        ]);
+
             
-            'id_utilisateur' => 2, 
-        ]);
 
-        LigneCommande::create([
-            'quantité' => 1,
-            'id_produite' => 2,
-            
-            'id_utilisateur' => 2,
-        ]);
-
-        LigneCommande::create([
-            'quantité' => 3,
-            'id_produite' => 3,
-            
-            'id_utilisateur' => 2,
-        ]);
-
-
-
-
-
-        // Créer des commandes avec des utilisateurs et des lignes de commande existants
-        $user1 = User::first(); // Assurez-vous qu'il y a un utilisateur dans la base de données
-        $ligneCommande1 = LigneCommande::first(); // Assurez-vous qu'il y a une ligne de commande dans la base de données
-
-        Commande::create([
-            'id_utilisateur' => $user1->id,
-            'id_ligneCommande' => $ligneCommande1->id,
-            'total' => 200.00, // Exemple de total
-            'status' => 'en_attend',
-            'date_commande' => now(),
-            'date_livraison' => null,
-        ]);
-
-        $user2 = User::skip(1)->first(); // Récupérer un autre utilisateur pour tester
-        $ligneCommande2 = LigneCommande::skip(1)->first(); // Récupérer une autre ligne de commande
-
-        Commande::create([
-            'id_utilisateur' => $user2->id,
-            'id_ligneCommande' => $ligneCommande2->id,
-            'total' => 350.00, // Exemple de total
-            'status' => 'en_cours',
-            'date_commande' => now(),
-            'date_livraison' => null,
-        ]);
-
-
-
-
-        // Créer des paiements pour les commandes existantes
-        $commande1 = Commande::first(); // Assurez-vous qu'il y a une commande dans la base de données
-        Paiement::create([
-            'id_commande' => $commande1->id,
-            'montant' => 200.00, // Exemple de montant
-            'status' => 'payé',
-        ]);
-
-        $commande2 = Commande::skip(1)->first(); // Récupérer une autre commande
-        Paiement::create([
-            'id_commande' => $commande2->id,
-            'montant' => 350.00, // Exemple de montant
-            'status' => 'non_payé',
-        ]);
-
-        // Créer des lignes d'achats pour les produits existants
-        $produite1 = Produite::first(); // Assurez-vous qu'il y a un produit dans la base de données
-        LigneAchat::create([
-            'quantité' => 10, // Exemple de quantité
-            'id_produite' => $produite1->id,
-            'prix' => 15.00, // Exemple de prix
-        ]);
-
-        $produite2 = Produite::skip(1)->first(); // Récupérer un autre produit
-        LigneAchat::create([
-            'quantité' => 5, // Exemple de quantité
-            'id_produite' => $produite2->id,
-            'prix' => 20.00, // Exemple de prix
-        ]);
-
-
-
-
-        // Créer des achats pour les lignes d'achats existantes
-        $ligneAchat1 = LigneAchat::first(); // Assurez-vous qu'il y a une ligne d'achat dans la base de données
-        Achat::create([
-            'id_ligneAchat' => $ligneAchat1->id,
-            'status' => 'en_attend', // Exemple de statut
-        ]);
-
-        $ligneAchat2 = LigneAchat::skip(1)->first(); // Récupérer une autre ligne d'achat
-        Achat::create([
-            'id_ligneAchat' => $ligneAchat2->id,
-            'status' => 'en_cours', // Exemple de statut
-        ]);
     }
 }
