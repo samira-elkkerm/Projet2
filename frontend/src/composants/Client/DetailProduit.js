@@ -4,6 +4,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import '../../App.css';
+import ListProduites from "./ListProduites";
+
 
 import NavigationBar from '../../layout/Navigation';
 import Footer from '../../layout/Footer';
@@ -159,43 +161,10 @@ const DetailProduit = () => {
           </div>
         </div>
 
-        <div className="produits-container my-4 container">
-          <div className="produits-grid">
-            {relatedProducts.map(item => (
-              <div
-                key={item.id}
-                className="produit-card"
-                onMouseEnter={() => setHoveredProduct(item.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
-              >
-                <div className="produit-image-container">
-                  <img 
-                    src={`http://127.0.0.1:8000/images/${item.image}`} 
-                    alt={item.nom}
-                    className="produit-image"
-                  />
-                  {hoveredProduct === item.id && (
-                    <div className="bg-gray">
-                      <button 
-                        onClick={() => handleViewDetails(item.id)} 
-                        className="cart-icon-overlay"
-                      >
-                        <FontAwesomeIcon
-                          icon={faShoppingCart}
-                          className="cart-icon"
-                        />
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <div className="produit-details">
-                  <h3 className="produit-nom">{item.nom}</h3>
-                  <p className="produit-prix">{item.prix} DH</p>
-                </div>
-              </div>
-            ))}
+       <div className="mt-5 container">
+            <h5 className="mb-4">D'autres suggestions pour vous</h5>
+            <ListProduites />
           </div>
-        </div>
       </div>
       <Footer />
     </>
