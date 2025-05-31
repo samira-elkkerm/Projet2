@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import Footer from '../../layout/Footer';
-import Navigation from '../../layout/Navigation';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faLeaf, faSearch, faSpinner, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faSearch, faSpinner, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { debounce } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
-
 const PRODUCTS_PER_PAGE = 9;
 
 const ListProduits = () => {
@@ -18,73 +15,143 @@ const ListProduits = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
   const navigate = useNavigate();
 
-  const handleViewDetails = (produitId) => {
-    navigate(`/produit/${produitId}`);
-  };
-
-  // Chargement des produits
-  const fetchProduits = useCallback(async () => {
+  // Chargement des produits avec pagination
+  const fetchProduits = useCallback(async (page = 1) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/produites`);
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP: ${response.status}`);
-      }
+      const response = await fetch(
+        `${API_BASE_URL}/api/produites?page=${page}&per_page=${PRODUCTS_PER_PAGE}`
+      );
+      
+      if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+      
       const data = await response.json();
-      setProduits(data);
-      setFilteredProduits(data);
-      setCurrentPage(1); // reset page on fetch
+      setProduits(data.data || data);
+      setFilteredProduits(data.data || data);
+      setTotalProducts(data.total || data.length);
+      setCurrentPage(page);
     } catch (error) {
       setError("Impossible de charger les produits. Veuillez réessayer plus tard.");
+      console.error("Fetch error:", error);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchProduits();
+    fetchProduits(1);
   }, [fetchProduits]);
 
-  // Recherche avec debounce
+  // Recherche optimisée
   const handleSearch = debounce((term) => {
     if (!term) {
-      setFilteredProduits(produits);
-      setCurrentPage(1);
+      fetchProduits(1);
       return;
     }
-    const filtered = produits.filter(produit =>
-      produit.nom.toLowerCase().includes(term.toLowerCase()) ||
-      (produit.description && produit.description.toLowerCase().includes(term.toLowerCase()))
-    );
-    setFilteredProduits(filtered);
-    setCurrentPage(1);
+    
+    setIsLoading(true);
+    fetch(`${API_BASE_URL}/api/produites/search?q=${term}`)
+      .then(res => res.json())
+      .then(data => {
+        setFilteredProduits(data);
+        setTotalProducts(data.length);
+        setCurrentPage(1);
+      })
+      .catch(err => setError("Erreur de recherche"))
+      .finally(() => setIsLoading(false));
   }, 300);
 
   useEffect(() => {
     handleSearch(searchTerm);
     return () => handleSearch.cancel();
-  }, [searchTerm, produits, handleSearch]);
+  }, [searchTerm]);
 
-  // Pagination logic
-  const totalPages = Math.ceil(filteredProduits.length / PRODUCTS_PER_PAGE);
-  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
-  const currentProducts = filteredProduits.slice(indexOfFirstProduct, indexOfLastProduct);
+  // Calcul de pagination
+  const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
+  const currentProducts = filteredProduits.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE
+  );
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
-  const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  // Navigation pagination
+  const paginate = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+    if (!searchTerm) fetchProduits(pageNumber);
+  };
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const maxVisibleButtons = 5;
+    let startPage, endPage;
+
+    if (totalPages <= maxVisibleButtons) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      const half = Math.floor(maxVisibleButtons / 2);
+      if (currentPage <= half + 1) {
+        startPage = 1;
+        endPage = maxVisibleButtons;
+      } else if (currentPage >= totalPages - half) {
+        startPage = totalPages - maxVisibleButtons + 1;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - half;
+        endPage = currentPage + half;
+      }
+    }
+
+    // Bouton Première page
+    if (startPage > 1) {
+      buttons.push(
+        <button key={1} onClick={() => paginate(1)} className="pagination-number">
+          1
+        </button>
+      );
+      if (startPage > 2) {
+        buttons.push(<span key="start-ellipsis" className="pagination-ellipsis">...</span>);
+      }
+    }
+
+    // Boutons centraux
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => paginate(i)}
+          className={`pagination-number ${currentPage === i ? 'active' : ''}`}
+          aria-current={currentPage === i ? 'page' : undefined}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Bouton Dernière page
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        buttons.push(<span key="end-ellipsis" className="pagination-ellipsis">...</span>);
+      }
+      buttons.push(
+        <button key={totalPages} onClick={() => paginate(totalPages)} className="pagination-number">
+          {totalPages}
+        </button>
+      );
+    }
+
+    return buttons;
+  };
 
   return (
     <div className="page-container">
-
-
-      
-
       <main className="shop-main-content">
+        
+
         {isLoading ? (
           <div className="loading-container">
             <FontAwesomeIcon icon={faSpinner} spin size="2x" />
@@ -93,11 +160,11 @@ const ListProduits = () => {
         ) : error ? (
           <div className="error-container">
             <p className="error-message">{error}</p>
-            <button onClick={fetchProduits} className="retry-button">
+            <button onClick={() => fetchProduits(1)} className="retry-button">
               Réessayer
             </button>
           </div>
-        ) : filteredProduits.length === 0 ? (
+        ) : currentProducts.length === 0 ? (
           <div className="no-results">
             <p>Aucun produit ne correspond à votre recherche.</p>
           </div>
@@ -110,7 +177,6 @@ const ListProduits = () => {
                   className={`product-card ${hoveredProduct === produit.id ? 'hovered' : ''}`}
                   onMouseEnter={() => setHoveredProduct(produit.id)}
                   onMouseLeave={() => setHoveredProduct(null)}
-                  aria-labelledby={`product-${produit.id}-title`}
                 >
                   <div className="product-image-container">
                     <img
@@ -122,9 +188,8 @@ const ListProduits = () => {
                     {hoveredProduct === produit.id && (
                       <div className="product-overlay">
                         <button
-                          onClick={() => handleViewDetails(produit.id)}
+                          onClick={() => navigate(`/produit/${produit.id}`)}
                           className="add-to-cart-btn"
-                          aria-label={`Voir détails de ${produit.nom}`}
                         >
                           <FontAwesomeIcon icon={faShoppingCart} />
                           Voir détails
@@ -133,9 +198,7 @@ const ListProduits = () => {
                     )}
                   </div>
                   <div className="product-details">
-                    <h3 id={`product-${produit.id}-title`} className="product-name">
-                      {produit.nom}
-                    </h3>
+                    <h3 className="product-name">{produit.nom}</h3>
                     {produit.categorie && (
                       <span className="product-category">{produit.categorie}</span>
                     )}
@@ -145,29 +208,22 @@ const ListProduits = () => {
               ))}
             </div>
 
-            {/* Pagination */}
-            {filteredProduits.length > PRODUCTS_PER_PAGE && (
+            {/* Pagination améliorée */}
+            {totalPages > 1 && (
               <nav className="pagination-container" aria-label="Pagination Navigation">
                 <button
-                  onClick={prevPage}
+                  onClick={() => paginate(currentPage - 1)}
                   disabled={currentPage === 1}
                   className="pagination-arrow"
                   aria-label="Page précédente"
                 >
                   <FontAwesomeIcon icon={faChevronLeft} />
                 </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(number => (
-                  <button
-                    key={number}
-                    onClick={() => paginate(number)}
-                    className={`pagination-number ${currentPage === number ? 'active' : ''}`}
-                    aria-current={currentPage === number ? 'page' : undefined}
-                  >
-                    {number}
-                  </button>
-                ))}
+                
+                {renderPaginationButtons()}
+
                 <button
-                  onClick={nextPage}
+                  onClick={() => paginate(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   className="pagination-arrow"
                   aria-label="Page suivante"
@@ -179,12 +235,9 @@ const ListProduits = () => {
           </>
         )}
       </main>
-
     </div>
   );
 };
-
-
 
 // CSS avec CSS Modules ou styled-components serait préférable, mais voici les styles améliorés
 const styles = `
@@ -426,21 +479,4 @@ const styles = `
 const styleElement = document.createElement('style');
 styleElement.textContent = styles;
 document.head.appendChild(styleElement);
-
 export default ListProduits;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -38,7 +38,7 @@ const GestionPaiement = () => {
           numero_commande: commande.numero_commande,
           utilisateur: `${commande.prenom} ${commande.nom}`,
           montant: commande.total,
-          statut: commande.statut_paiement || 'Non payé',
+          statut: commande.statut === 'Livre' ? 'Payé' : 'Non payé',
           date: new Date(commande.created_at).toLocaleDateString('fr-FR'),
           email: commande.email,
           telephone: commande.telephone,
